@@ -1,0 +1,63 @@
+// rem px fallback
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@mixin rem-fallback($property, $values...) {
+  $max: length($values);
+  $pxValues: '';
+  $remValues: '';
+
+  @for $i from 1 through $max {
+    $value: strip-unit(nth($values, $i));
+    $pxValues: #{$pxValues + $value*16}px;
+
+    @if $i < $max {
+      $pxValues: #{$pxValues + " "};
+    }
+  } 
+
+  @for $i from 1 through $max {
+    $value: strip-unit(nth($values, $i));
+    $remValues: #{$remValues + $value}rem;
+
+    @if $i < $max {
+      $remValues: #{$remValues + " "};
+    }
+  } 
+  
+  #{$property}: $pxValues; 
+  #{$property}: $remValues; 
+}
+
+// opacity mixin
+@mixin opacity($trans) {
+  filter: alpha(opactiy=($trans * 100));
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})";
+  -moz-opacity: $trans;
+  -khtml-opacity: $trans;
+  opacity: $trans;
+}
+
+//hyphen mixin
+@mixin hyphens($hyphenation: none) {
+// none | manual | auto
+  @include prefixer(hyphens, $hyphenation, webkit moz ms spec);
+}
+
+// rem border with px fallback mixin
+@mixin border($size: .0625, $style: solid,$color: #bbb) {
+	$pxsize: ($size*16) + px;
+	$remsize: $size + rem;
+	border: $pxsize $style $color;
+	border: $remsize $style $color;
+}
+
+//colors
+$green: #B3D732;
+$red: #CE1446;
+$type: #ebebeb;
+$background: #2B2A27;
+
+//font stacks
+$lobster: 'Lobster',cursive;

@@ -1,0 +1,170 @@
+* {
+  @include box-sizing(border-box);
+}
+
+
+label,
+input,
+select {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
+}
+
+
+body {
+  background: $background;
+  color: $type;
+}
+
+
+#wrapper {
+  margin: 0 auto;
+  max-width: rem(400);
+  overflow: hidden;
+  width: 96%;
+}
+
+
+nav {
+  h1 {
+    @include rem-fallback(margin-bottom, .25);
+    @include rem-fallback(margin-top, .5);
+    color: $green;
+    font-family: $lobster;
+    text-align: center;
+  }
+}
+
+
+#page1,
+#page2,
+#page3,
+#page4,
+#page5,
+.p1c2,
+.p1c3,
+.p1c4,
+.p1c5,
+.p1c6,
+.p1c7,
+.p1c8,
+#p1next {
+  display: none;
+}
+
+
+section {
+  h2 {
+    text-align: center;
+    color: $red;
+    @include rem-fallback(margin-top,.5);
+  }
+}
+
+
+input[type="button"] {
+  width: 100%;
+  @include rem-fallback(margin-bottom,1);
+  margin-left: auto;
+  margin-right: auto;
+  @include rem-fallback(height,3);
+  @include button(pill,$red);
+}
+
+
+.p2c3 input {
+  @include rem-fallback(margin-top,2);
+  @include rem-fallback(margin-bottom,4);
+}
+
+
+#p1next {
+  float: left;
+}
+
+
+#p1next {
+  float: right;
+}
+
+
+.p1c9 input {
+  max-width: 40%;
+  display: inline-block;
+  overflow: hidden;
+}
+
+
+.dropdown,
+.textbox {
+  @include rem-fallback(margin-bottom,1);
+}
+
+
+.calcbox,
+.rangebox,
+#cbore {
+  overflow: hidden;
+  @include rem-fallback(margin-bottom,1);
+  text-align: center;
+  color: $green;
+  input[type="text"] {
+    color: $green;
+    text-align: center;
+    background: none;
+    border: none;
+    @include rem-fallback(font-size,2);
+  }
+  
+
+  label {
+    @include rem-fallback(font-size,1.25);
+  }
+  
+
+  output {
+    @include rem-fallback(font-size,2);
+  }
+}
+
+
+#oilamount {
+  @include rem-fallback(font-size, 1.5);
+  @include rem-fallback(margin-top, 1);
+  @include rem-fallback(margin-bottom, 1);
+  color: $green;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+
+#cboremin {
+  float: left;
+  width: 50%;
+}
+
+
+#cboremax {
+  float: right;
+  width: 50%;
+}
+
+
+.homelink {
+  text-align: center;
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: $green;
+  }
+}
+
+
+#portduration {
+  display: none;
+}

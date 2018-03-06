@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Moped Toolbox</title>
+    <meta name="description" content="Moped Toolbox">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='//fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <script src="/js/vendor/zepto.min.js"></script>
+    <script src="/js/toolbox.js"></script>
+
+    <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>
+                window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')
+            </script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class='current'>
+            <h1>Moped Toolbox</h1>
+        </nav>
+        <article>
+            <!-- start index -->
+            <section id="index">
+                <h2>Choose your task brave adventurer!</h2>
+                <input type="button" value="Calculate Gearing" id="calcgearing">
+                <input type="button" value="Carburetor Sizing" id="carbsize">
+                <input type="button" value="Mix Gas" id="mixgas">
+                <input type="button" value="Calculate Port Duration" id="portduration">
+            </section>
+            <!-- end index -->
+            <!-- start page 1 -->
+            <section id="page1">
+                <h2>
+                Configure Your Bike
+            </h2>
+                <div class="dropdown p1c1">
+                    <label for="manufacturer">Select a Manufacturer</label>
+                    <select id="manufacturer" name="manufacturer"></select>
+                </div>
+                <div class="dropdown p1c2">
+                    <label for="model">Select a Model</label>
+                    <select id="model" name="model"></select>
+                </div>
+                <div class="dropdown p1c3">
+                    <label for="type">Select a Type</label>
+                    <select id="type" name="type"></select>
+                </div>
+                <div class="dropdown p1c4">
+                    <label for="version">Select a Version</label>
+                    <select id="version" name="version"></select>
+                </div>
+                <div class="dropdown p1c5">
+                    <label for="fsprocket">Select a Front Sprocket</label>
+                    <select id="fsprocket" name="fsprocket"></select>
+                </div>
+                <div class="dropdown p1c6">
+
+                    <label for="rsprocket">Select a Rear Sprocket</label>
+                    <select id="rsprocket" name="rsprocket">
+                    </select>
+                </div>
+                <div class="dropdown p1c7">
+                    <label for="wheelsize">Select a Wheel Size</label>
+                    <select id="wheelsize" name="wheelsize"></select>
+                </div>
+                <div class="dropdown p1c8">
+                    <label for="tirewidth">Select a Tire Width</label>
+                    <select id="tirewidth" name="tirewidth">
+                    </select>
+                </div>
+                <div class="buttonwrap 2button p1c9">
+                    <input type="button" value="Back" class="button" id="p1prev">
+                    <input type="button" value="Next" class="button" id="p1next">
+                </div>
+            </section>
+            <!-- end page  1-->
+            <!-- start page 2 -->
+            <section id="page2">
+                <h2>Calculate RPM &amp; MPH</h2>
+                <div id="calculator">
+                    <div class="calcbox p2c1">
+                        <input type="text" id="finalratio" value="" readonly>
+                        <label for="finalratio">Crankshaft To Wheel Ratio</label>
+                    </div>
+                    <div class="calcbox p2c2">
+                        <output for="rpm" id="currentrpm"></output>
+                        <label for="rpm">RPM</label>
+                    </div>
+
+                    <div class="calcbox p2c3">
+                        <output for="mph" id="currentmph"></output>
+                        <label for="mph">MPH</label>
+                        <input type="range" id="mph" name="mph">
+                    </div>
+                </div>
+                <div class="buttonwrap p2c4">
+                    <input type="button" value="Back" class="button" id="p2prev">
+                </div>
+            </section>
+            <!-- end page 2-->
+            <!-- start page 3 -->
+            <section id="page3">
+                <h2>Mix Your Oil &amp; Fuel</h2>
+                <output for="gas" id="oilamount"></output>
+                <div class="dropdown p3c1">
+                    <label for="ratio">Select desired fuel to oil ratio.</label>
+                    <select id="ratio">
+                    </select>
+
+                </div>
+                <div class="textbox p3c2">
+                    <label for="gas">How much gas?<em>(Gallons)</em>
+                    </label>
+                    <input type="text" id="gas" class="gasinput">
+                </div>
+                <div class="buttonwrap p3c3">
+                    <input type="button" value="Back" class="button" id="p3prev">
+                </div>
+            </section>
+            <!-- end page  3-->
+            <!-- start page 4 -->
+            <section id="page4">
+                <h2>Calculate Carburetor Size</h2>
+                <p id="cdisclaimer">Note: These sizes should just give you a ballpark range, volumetric efficiencey of a two stroke engine will vary widely depending on where the engine's RPMs are in relation to it's pipes powerband</p>
+                <div id="cbore">
+                    <div id="cboremin">
+                        <label>Min Carb Size</label>
+                        <output id="mincarbout"></output>
+                    </div>
+                    <div id="cboremax">
+                        <label>Max Carb Size</label>
+                        <output id="maxcarbout"></output>
+                    </div>
+                </div>
+                <div class="dropdown p4c1">
+                    <label for="cmanselect">Select an Engine Manufacturer</label>
+                    <select id="cmanselect" name="cmanselect"></select>
+                </div>
+                <div class="dropdown p4c2">
+                    <label for="cmodselect">Engine</label>
+                    <select id="cmodselect" name="cmonselect"></select>
+                </div>
+                <div class="textbox p4c3">
+                    <label for="pistonselect">What is your piston's diameter? <em>(mm)</em>
+                    </label>
+                    <select id="pistonselect" name="pistonselect"></select>
+                </div>
+                <div class="rangebox p4c4">
+                    <label for="crpm">Desired RPM</label>
+                    <output for="crpm" id="dispcrpm"></output>
+                    <input type="range" id="crpm" name="crpm">
+                </div>
+                <div class="buttonwrap p4c5">
+                    <input type="button" value="Back" class="button" id="p4prev">
+                </div>
+            </section>
+            <!-- end page  4-->
+            <!-- start page 5 -->
+            <section id="page5">
+                <h2>Calculate Port Duration</h2>
+                <p>All Measurements are in millimeters</p>
+                <div id="pdresults">
+                    <div id="pdexresult">
+                        <label>Exhaust Port Duration</label>
+                        <output id="pdexoutput"></output>
+                    </div>
+                    <div id="pdtrresult">
+                        <label>Transfer Port Duration</label>
+                        <output id="pdtroutput"></output>
+                    </div>
+                    <div id="pdtrresult">
+                        <label>Blowdown</label>
+                        <output id="pdtroutput"></output>
+                    </div>
+                </div>
+                <div class="dropdown p5c1">
+                    <label for="pdmanselect">Select an Engine Manufacturer</label>
+                    <select id="pdmanselect" name="pdmanselect"></select>
+                </div>
+                <div class="textbox p5c2">
+                    <label for="pdexheight">Exhaust Port Height Above BDC</label>
+                    <input type="text" id="pdexheight" name="pdexheight">
+                </div>
+                <div class="textbox p5c2">
+                    <label for="pdtrheight">Transfer Port Height Above BDC</label>
+                    <input type="text" id="pdtrheight" name="pdtrheight">
+                </div>
+                <div class="buttonwrap p5c3">
+                    <input type="button" value="Back" class="button" id="p5prev">
+                </div>
+            </section>
+            <!-- end page 5 -->
+            <div class="homelink">
+                <a class="center" href="http://martysgarage.info/">Back to Marty's Garage</a>
+            </div>
+            
+        </article>
+    </div>
+</body>
+
+</html>
