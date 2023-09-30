@@ -1,6 +1,6 @@
 $(document).ready(function($) {
   //populate fixed dropdowns
-  var i = 11;
+  var i = 9;
   while (++i < 20) {
     $("#wheelsize").append($("<option />").val(i).text(i + " Inch"));
   }
