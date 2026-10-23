@@ -1,6 +1,6 @@
 import { theme } from 'antd'
 import { useBrandToken } from '../context/ThemeContext'
-import { GAUGE_START, GAUGE_SWEEP, arcPath, polar, rpmToAngle } from '../lib/gauge'
+import { GAUGE_START, GAUGE_SWEEP, arcPath, polar, progressArcPath, rpmToAngle } from '../lib/gauge'
 
 interface TachometerProps {
   rpm: number
@@ -22,13 +22,13 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
   const brand = useBrandToken()
   const ticks = Array.from({ length: max / 2000 + 1 }, (_, i) => i * 2000)
   const needle = rpmToAngle(rpm, max)
+  const progress = progressArcPath(CX, CY, R, rpm, max)
 
   return (
     <figure style={{ margin: 0, textAlign: 'center' }}>
       <svg
         viewBox="0 0 200 170"
         width="100%"
-        style={{ maxWidth: 260 }}
         // Inline SVG needs role="img" + aria-label to be announced as one image; an <img> tag can't hold it.
         // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
         role="img"
@@ -37,10 +37,20 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
         <path
           d={arcPath(CX, CY, R, GAUGE_START, GAUGE_START + GAUGE_SWEEP)}
           fill="none"
-          stroke={token.colorBorderSecondary}
+          stroke={brand.gaugeTrack}
           strokeWidth={TRACK}
           strokeLinecap="round"
         />
+        {progress && (
+          <path
+            data-testid="gauge-progress"
+            d={progress}
+            fill="none"
+            stroke={brand.colorAccent}
+            strokeWidth={TRACK}
+            strokeLinecap="round"
+          />
+        )}
         <path
           d={arcPath(CX, CY, R, rpmToAngle(redline, max), GAUGE_START + GAUGE_SWEEP)}
           fill="none"
@@ -84,7 +94,7 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
           y1={CY}
           x2={CX + R - 14}
           y2={CY}
-          stroke={brand.colorAccent}
+          stroke={brand.needle}
           strokeWidth={4}
           strokeLinecap="round"
           style={{
@@ -94,13 +104,13 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
             transition: `transform ${token.motionDurationMid}`,
           }}
         />
-        <circle cx={CX} cy={CY} r={7} fill={brand.colorAccent} />
+        <circle cx={CX} cy={CY} r={7} fill={brand.needle} />
       </svg>
-      <figcaption className="tb-result">
-        <div className="tb-result-value" aria-live="polite">
+      <figcaption className="tb-gauge-readout">
+        <div className="tb-gauge-value" aria-live="polite">
           {rpm}
         </div>
-        <div className="tb-result-label">RPM</div>
+        <div className="tb-gauge-caption">RPM</div>
       </figcaption>
     </figure>
   )

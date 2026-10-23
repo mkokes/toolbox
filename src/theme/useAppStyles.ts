@@ -111,6 +111,27 @@ export function useAppStyles() {
     '.tb-result-label': { fontSize: token.fontSizeXL },
     '.tb-result-value': { fontSize: token.fontSizeHeading2, fontVariantNumeric: 'tabular-nums' },
 
+    // The gauge's big readout sits in the open bottom of the dial.
+    '.tb-gauge-readout': {
+      position: 'relative',
+      marginTop: -token.sizeXXL,
+      marginBottom: token.margin,
+      textAlign: 'center',
+      '.tb-gauge-value': {
+        color: brand.colorAccent,
+        fontSize: token.fontSizeHeading1 * 1.15,
+        fontWeight: 700,
+        lineHeight: 1.1,
+        fontVariantNumeric: 'tabular-nums',
+      },
+      '.tb-gauge-caption': {
+        color: token.colorTextSecondary,
+        fontSize: token.fontSizeSM,
+        letterSpacing: token.fontSizeSM * 0.14,
+        textTransform: 'uppercase',
+      },
+    },
+
     '.tb-callout': {
       display: 'block',
       color: brand.colorAccent,
