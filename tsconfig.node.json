@@ -9,5 +9,5 @@
     "strict": true,
     "types": ["node"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "pwa-assets.config.ts", "src/pwa.ts", "src/theme/tokens.ts"]
 }

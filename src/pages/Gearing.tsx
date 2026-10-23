@@ -4,10 +4,16 @@ import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import ResultStat from '../components/ResultStat'
 import { type Engine, findEngine, manufacturers, models, versions } from '../data/engines'
+import UnitToggle from '../components/UnitToggle'
+import { useUnits } from '../context/UnitsContext'
 import { sprocketOptions, tireWidths, wheelSizes } from '../lib/options'
 import { calcRpm, finalRatio, tireCircumference } from '../lib/gearing'
+import { type UnitSystem, speedFromMph, speedToMph, unitLabels } from '../lib/units'
 
 const toOptions = (list: string[]) => list.map((v) => ({ value: v, label: v }))
+
+// 100 mph, and the equivalent round figure in km/h
+const MAX_SPEED: Record<UnitSystem, number> = { imperial: 100, metric: 160 }
 
 interface Setup {
   front: number
@@ -29,7 +35,10 @@ export default function Gearing() {
   const [model, setModel] = useState<string>()
   const [version, setVersion] = useState<string>()
   const [setup, setSetup] = useState<Setup>()
+  // Speed is held in mph (unrounded) so switching units never drifts the RPM.
   const [mph, setMph] = useState(30)
+  const { units } = useUnits()
+  const labels = unitLabels[units]
 
   const engine = findEngine(manufacturer, model, version)
   const versionList = manufacturer && model ? versions(manufacturer, model) : []
@@ -54,9 +63,11 @@ export default function Gearing() {
     const internal = engine.finaldriveratio
     const external = setup.front / setup.rear
     const circumference = tireCircumference(setup.wheel, setup.tire)
+    const speed = Math.round(speedFromMph(mph, units))
     return (
       <section>
-        <PageHeader>Calculate RPM &amp; MPH</PageHeader>
+        <PageHeader>Calculate RPM &amp; {labels.speed}</PageHeader>
+        <UnitToggle />
         <GearingSteps current={1} />
         <ResultStat label="Crankshaft To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
         <Row>
@@ -64,10 +75,17 @@ export default function Gearing() {
             <ResultStat label="RPM" value={calcRpm(internal, external, mph, circumference)} />
           </Col>
           <Col span={12}>
-            <ResultStat label="MPH" value={mph} />
+            <ResultStat label={labels.speed} value={speed} />
           </Col>
         </Row>
-        <Slider min={1} max={100} value={mph} onChange={setMph} aria-label="MPH" style={{ margin: '2rem 0 3rem' }} />
+        <Slider
+          min={1}
+          max={MAX_SPEED[units]}
+          value={speed}
+          onChange={(v) => setMph(speedToMph(v, units))}
+          aria-label={labels.speed}
+          style={{ margin: '2rem 0 3rem' }}
+        />
         <BackButton onClick={() => setStep(0)} />
       </section>
     )
@@ -76,10 +94,12 @@ export default function Gearing() {
   return (
     <section>
       <PageHeader>Configure Your Bike</PageHeader>
+      <UnitToggle />
       <GearingSteps current={0} />
       <Form layout="vertical">
-        <Form.Item label="Select a Manufacturer">
+        <Form.Item htmlFor="manufacturer" label="Select a Manufacturer">
           <Select
+            id="manufacturer"
             size="large"
             placeholder="Please Select A Manufacturer"
             options={toOptions(manufacturers())}
@@ -93,8 +113,9 @@ export default function Gearing() {
           />
         </Form.Item>
         {manufacturer && (
-          <Form.Item label="Select a Model">
+          <Form.Item htmlFor="model" label="Select a Model">
             <Select
+              id="model"
               size="large"
               placeholder="Please Select An Engine Model"
               options={toOptions(models(manufacturer))}
@@ -104,8 +125,9 @@ export default function Gearing() {
           </Form.Item>
         )}
         {versionList.length > 0 && (
-          <Form.Item label="Select a Version">
+          <Form.Item htmlFor="version" label="Select a Version">
             <Select
+              id="version"
               size="large"
               placeholder="Please Select An Engine Version"
               options={toOptions(versionList)}
@@ -116,17 +138,47 @@ export default function Gearing() {
         )}
         {engine && setup && (
           <>
-            <Form.Item label={manufacturer === 'Vespa' ? 'Select a Front Pulley' : 'Select a Front Sprocket'}>
-              <Select size="large" options={sprockets.front} value={setup.front} onChange={(front) => update({ front })} />
+            <Form.Item
+              htmlFor="front"
+              label={manufacturer === 'Vespa' ? 'Select a Front Pulley' : 'Select a Front Sprocket'}
+            >
+              <Select
+                id="front"
+                size="large"
+                options={sprockets.front}
+                value={setup.front}
+                onChange={(front) => update({ front })}
+              />
             </Form.Item>
-            <Form.Item label={manufacturer === 'Vespa' ? 'Select a Rear Pulley' : 'Select a Rear Sprocket'}>
-              <Select size="large" options={sprockets.rear} value={setup.rear} onChange={(rear) => update({ rear })} />
+            <Form.Item
+              htmlFor="rear"
+              label={manufacturer === 'Vespa' ? 'Select a Rear Pulley' : 'Select a Rear Sprocket'}
+            >
+              <Select
+                id="rear"
+                size="large"
+                options={sprockets.rear}
+                value={setup.rear}
+                onChange={(rear) => update({ rear })}
+              />
             </Form.Item>
-            <Form.Item label="Select a Wheel Size">
-              <Select size="large" options={wheelSizes} value={setup.wheel} onChange={(wheel) => update({ wheel })} />
+            <Form.Item htmlFor="wheel" label="Select a Wheel Size">
+              <Select
+                id="wheel"
+                size="large"
+                options={wheelSizes(units)}
+                value={setup.wheel}
+                onChange={(wheel) => update({ wheel })}
+              />
             </Form.Item>
-            <Form.Item label="Select a Tire Width">
-              <Select size="large" options={tireWidths} value={setup.tire} onChange={(tire) => update({ tire })} />
+            <Form.Item htmlFor="tire" label="Select a Tire Width">
+              <Select
+                id="tire"
+                size="large"
+                options={tireWidths(units)}
+                value={setup.tire}
+                onChange={(tire) => update({ tire })}
+              />
             </Form.Item>
           </>
         )}
@@ -154,7 +206,7 @@ function GearingSteps({ current }: { current: number }) {
       direction="horizontal"
       responsive={false}
       current={current}
-      items={[{ title: 'Bike' }, { title: 'RPM & MPH' }]}
+      items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]}
       style={{ marginBottom: '1.5rem' }}
     />
   )

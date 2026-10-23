@@ -18,9 +18,9 @@ export interface Engine {
 
 export const engines = data as Engine[]
 
-const unique = <T,>(list: T[]) => Array.from(new Set(list))
+const unique = <T>(list: T[]) => Array.from(new Set(list))
 
-export const manufacturers = (): string[] => unique(engines.map((e) => e.manufacturer)).sort()
+export const manufacturers = (): string[] => unique(engines.map((e) => e.manufacturer)).toSorted()
 
 export const models = (manufacturer: string): string[] =>
   unique(engines.filter((e) => e.manufacturer === manufacturer).map((e) => e.model))
@@ -30,10 +30,6 @@ export const versions = (manufacturer: string, model: string): string[] => {
   const matches = engines.filter((e) => e.manufacturer === manufacturer && e.model === model)
   return matches.length > 1 ? matches.map((e) => e.version ?? '') : []
 }
-
-/** Stroke length is shared by every version of a model, so any matching record will do. */
-export const strokeLength = (manufacturer: string, model: string): number | undefined =>
-  engines.find((e) => e.manufacturer === manufacturer && e.model === model)?.strokelength
 
 /** Resolve a single engine record. `version` is only needed when the model has several. */
 export function findEngine(manufacturer?: string, model?: string, version?: string): Engine | undefined {

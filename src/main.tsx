@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 import { antdTheme } from './theme/antdTheme'
 import { cssVars } from './theme/tokens'
 import { router } from './App'
+import { UnitsProvider } from './context/UnitsContext'
 import './theme/global.css'
 
 for (const [name, value] of Object.entries(cssVars)) {
@@ -14,7 +15,9 @@ for (const [name, value] of Object.entries(cssVars)) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfigProvider theme={antdTheme}>
-      <RouterProvider router={router} />
+      <UnitsProvider>
+        <RouterProvider router={router} />
+      </UnitsProvider>
     </ConfigProvider>
   </StrictMode>,
 )

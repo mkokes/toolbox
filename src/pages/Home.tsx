@@ -4,7 +4,6 @@ import PageHeader from '../components/PageHeader'
 
 const tasks = [
   { label: 'Calculate Gearing', to: '/gearing' },
-  { label: 'Carburetor Sizing', to: '/carb' },
   { label: 'Mix Gas', to: '/mix' },
 ]
 

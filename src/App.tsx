@@ -1,7 +1,6 @@
-import { Link, Outlet, createHashRouter } from 'react-router-dom'
+import { Link, Outlet, createHashRouter, type RouteObject } from 'react-router-dom'
 import Home from './pages/Home'
 import Gearing from './pages/Gearing'
-import CarbSizing from './pages/CarbSizing'
 import MixGas from './pages/MixGas'
 
 function Layout() {
@@ -15,27 +14,23 @@ function Layout() {
       <main>
         <Outlet />
       </main>
-      <footer className="tb-footer">
-        <a href="http://martysgarage.info/">Back to Marty's Garage</a>
-        <Link to="/styleguide" className="tb-subtle">
-          Styleguide
-        </Link>
-      </footer>
     </div>
   )
 }
 
-// Hash routing: GitHub Pages has no SPA fallback, so deep links must not depend on server rewrites.
-export const router = createHashRouter([
+// Exported so tests can mount the same routes in a memory router.
+export const routes: RouteObject[] = [
   {
     element: <Layout />,
     children: [
       { path: '/', element: <Home /> },
       { path: '/gearing', element: <Gearing /> },
-      { path: '/carb', element: <CarbSizing /> },
       { path: '/mix', element: <MixGas /> },
       { path: '/styleguide', lazy: async () => ({ Component: (await import('./pages/Styleguide')).default }) },
       { path: '*', element: <Home /> },
     ],
   },
-])
+]
+
+// Hash routing: GitHub Pages has no SPA fallback, so deep links must not depend on server rewrites.
+export const router = createHashRouter(routes)
