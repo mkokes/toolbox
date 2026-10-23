@@ -12,6 +12,11 @@ describe('MixGas', () => {
     expect(screen.getByText('50 : 1')).toBeInTheDocument()
   })
 
+  it('puts the Back button in the footer bar', () => {
+    renderRoute('/mix')
+    expect(screen.getByRole('button', { name: 'Back' }).closest('.tb-actions')).toBeInTheDocument()
+  })
+
   it('works out oil for gallons at the default 50:1', async () => {
     const { user } = renderRoute('/mix')
     await user.type(gasInput(), '1')

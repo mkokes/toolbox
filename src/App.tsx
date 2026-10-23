@@ -1,5 +1,6 @@
 import { Flex, theme } from 'antd'
 import { Link, Outlet, createHashRouter, type RouteObject } from 'react-router-dom'
+import ScrollHint from './components/ScrollHint'
 import ThemeToggle from './components/ThemeToggle'
 import { useAppStyles } from './theme/useAppStyles'
 import Home from './pages/Home'
@@ -32,6 +33,7 @@ function Layout() {
       <main>
         <Outlet />
       </main>
+      <ScrollHint />
     </div>
   )
 }

@@ -57,11 +57,12 @@ src/
     gauge.ts            tachometer geometry (rpmToAngle, polar, arcPath)
     contrast.ts         WCAG contrast ratio + AA thresholds
     setup.ts            GearingSetup ⇄ URL params (parseSetup/toSearchParams), engineRatio, stock/summary helpers
+    scroll.ts           hasMoreBelow (is there more page below the fold?)
     savedBikes.ts       My bikes storage helpers (loadBikes/addBike/storeBikes, "toolbox.bikes")
   context/UnitsContext.tsx   useUnits(): shared imperial/metric choice, persisted to localStorage ("toolbox.units")
   context/ThemeContext.tsx   useTheme() (light/dark/system, "toolbox.theme"), useBrandToken(), ThemedConfig
   hooks/useSavedBikes.ts    React state over lib/savedBikes
-  components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer, CompareGearing
+  components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer, CompareGearing, ScrollHint
   pages/                Home, Gearing, MixGas, Styleguide
   theme/                tokens.ts (every style value) → antdTheme.ts (getAntdTheme) + useAppStyles.ts (CSS-in-JS)
   test/                 setup.ts (jsdom shims), matchMedia.ts (setSystemDark), render.tsx (renderRoute), antd.ts (choose)
@@ -92,6 +93,7 @@ src/
   - The results page's target RPM is the optional `rpm` param (`parseTargetRpm`, default 8000, whole numbers 1000–15000). It's only written when it isn't the default.
   - Number inputs fed from the URL (`reduction`, `rpm`) are **uncontrolled** (`defaultValue`) and only commit valid values. Otherwise validation would wipe partial input such as "9" on the way to "9500".
   - Transient UI state (the speed slider, the "editing drivetrain" toggle) stays in component state so it doesn't flood the history.
+- **The Back/Next bar (`.tb-actions`) is a sticky footer.** Its z-index is `zIndexPopupBase - 1`, so it stays above every antd control (some set their own z-index) and below dropdowns and modals. Its negative margins cancel the wrapper's side and bottom padding on purpose: a sticky box can't move past its parent's padding, which would leave a gap with content showing under the bar. `ScrollHint` (rendered by the layout) shows a fade and chevron above it while there is more page below.
 - **Use antd components** (`Form`, `Select`, `InputNumber`, `Slider`, `Segmented`, `Button`) before writing custom controls. Primary buttons are `type="primary" size="large" block`.
 - **Formatting is owned by oxfmt** (`.oxfmtrc.json`: no semicolons, single quotes, 120 cols, trailing commas). Don't hand-format against it. Run `npm run format`.
 - **Lint warnings fail the push.** If a rule is wrong for a specific line, use `// oxlint-disable-next-line <rule>` with a comment explaining why.

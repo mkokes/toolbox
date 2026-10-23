@@ -22,6 +22,7 @@ import {
   theme,
 } from 'antd'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import ActionBar from '../components/ActionBar'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import CompareGearing from '../components/CompareGearing'
@@ -471,11 +472,6 @@ function Results({
       </ActionBar>
     </section>
   )
-}
-
-/** Back/Next row that sticks to the bottom of the screen on phones. */
-function ActionBar({ children }: { children: React.ReactNode }) {
-  return <div className="tb-actions">{children}</div>
 }
 
 function GearingSteps({ current }: { current: number }) {

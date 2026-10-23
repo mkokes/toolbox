@@ -56,15 +56,41 @@ export function useAppStyles() {
 
     '.tb-stack': { display: 'flex', flexDirection: 'column', gap: token.margin },
 
-    // Back/Next row pinned to the bottom of the viewport on long forms.
+    // Back/Next bar pinned to the bottom of the viewport on long forms. It has its own raised surface and a soft
+    // shadow so it reads as a footer, runs edge to edge (cancelling the wrapper's side padding), and sits above
+    // every antd control but below popups. The negative bottom margin cancels the wrapper's bottom padding:
+    // a sticky box can't move past its parent's padding, which would leave a gap where content shows below it.
     '.tb-actions': {
       position: 'sticky',
       bottom: 0,
-      zIndex: 1,
+      zIndex: token.zIndexPopupBase - 1,
       marginTop: token.margin,
-      padding: `${token.paddingSM}px 0`,
-      background: token.colorBgLayout,
+      marginInline: -token.paddingXS,
+      marginBottom: -token.paddingXL,
+      padding: `${token.paddingSM}px ${token.paddingXS}px`,
+      background: token.colorBgElevated,
       borderTop: `${token.lineWidth}px ${token.lineType} ${token.colorBorderSecondary}`,
+      boxShadow: `0 -${token.sizeXXS}px ${token.sizeSM}px ${token.colorFillSecondary}`,
+    },
+
+    // "More below" cue: a fade and chevron at the bottom of the screen (above the action bar, if any).
+    '.tb-scroll-hint': {
+      position: 'fixed',
+      insetInline: 0,
+      marginInline: 'auto',
+      maxWidth: brand.contentMaxWidth + token.paddingXS * 2,
+      zIndex: token.zIndexPopupBase - 2,
+      display: 'flex',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+      height: token.sizeXL,
+      paddingBottom: token.paddingXXS,
+      color: token.colorTextTertiary,
+      background: `linear-gradient(transparent, ${token.colorBgLayout})`,
+      opacity: 0,
+      pointerEvents: 'none',
+      transition: `opacity ${token.motionDurationMid}`,
+      '&.tb-scroll-hint--visible': { opacity: 1 },
     },
 
     // Home page tool cards: the whole card is the link; red edge on hover/focus.
