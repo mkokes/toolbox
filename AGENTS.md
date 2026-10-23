@@ -119,7 +119,7 @@ src/
 - **TypeScript lib is ES2023** (for `toSorted()`, which the `unicorn/no-array-sort` rule prefers). `tsconfig.node.json` sends its `tsc -b` output to `node_modules/.tmp` so no stray `vite.config.js` appears in the repo.
 - **React is pinned to 18.** antd 5 needs an extra compatibility patch to run on React 19, so don't bump React on its own.
 - **It's a PWA** (`vite-plugin-pwa`, configured in `vite.config.ts`; the manifest is in `src/pwa.ts`).
-  - The Workbox service worker precaches every built asset, using `registerType: 'autoUpdate'`.
+  - The Workbox service worker precaches every built asset. It uses `registerType: 'prompt'` with `injectRegister: false`, so a new worker waits instead of taking over. `src/pwaUpdates.ts` registers it and hands the registration to `lib/updateScheduler.ts`, which checks for updates hourly and on returning to the foreground, and applies a waiting one (reloading the page) only after an hour with no user activity. Don't switch back to `autoUpdate`: it reloads under the user as soon as an update is found.
   - Google Fonts (Lobster) are cached at runtime.
   - If you add a new kind of static file, make sure its extension is in `workbox.globPatterns`, or it won't work offline.
   - A stale service worker can serve old code while you debug a production build. Use a private window or unregister it in DevTools → Application. `npm run dev` doesn't register one.
