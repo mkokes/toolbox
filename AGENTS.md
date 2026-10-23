@@ -54,8 +54,11 @@ src/
     options.ts          dropdown option generators (wheel, tire, ratio, sprockets/pulleys)
     gauge.ts            tachometer geometry (rpmToAngle, polar, arcPath)
     contrast.ts         WCAG contrast ratio + AA thresholds
+    setup.ts            GearingSetup ⇄ URL params (parseSetup/toSearchParams), engineRatio, stock/summary helpers
+    savedBikes.ts       My bikes storage helpers (loadBikes/addBike/storeBikes, "toolbox.bikes")
   context/UnitsContext.tsx   useUnits(): shared imperial/metric choice, persisted to localStorage ("toolbox.units")
   context/ThemeContext.tsx   useTheme() (light/dark/system, "toolbox.theme"), useBrandToken(), ThemedConfig
+  hooks/useSavedBikes.ts    React state over lib/savedBikes
   components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer
   pages/                Home, Gearing, MixGas, Styleguide
   theme/                tokens.ts (every style value) → antdTheme.ts (getAntdTheme) + useAppStyles.ts (CSS-in-JS)
@@ -80,6 +83,11 @@ src/
   - **For styling that isn't a component prop** (global rules, the `tb-*` classes), add it to `useAppStyles.ts`. It uses antd's engine (`useStyleRegister` from `@ant-design/cssinjs`), so it re-themes automatically.
   - **Don't set antd's `colorTextHeading`** to make headings red. It also colors form labels, card titles, table headers and about 15 other components. Page headings use `brand.colorHeading` through `.tb-heading`.
   - **Both themes must pass contrast.** `tokens.test.ts` enforces it, and `/styleguide` shows both palettes side by side.
+- **The gearing setup lives in the URL**, not React state: `/#/gearing?make=Puch&model=E50&front=16&rear=45&wheel=17&tire=2.25&view=results`.
+  - `Gearing.tsx` reads it with `useSearchParams()` and `parseSetup()`, and writes it with `toSearchParams()`. Form edits use `{ replace: true }`, and only Next pushes a history entry.
+  - `parseSetup` validates every value against `engines.json` and the dropdown options, and silently drops anything invalid, so an old or mangled link degrades to a partly filled form instead of an error. Keep it that way when adding fields, and add the key to `toSearchParams` too.
+  - A custom engine is `make=custom&reduction=5.05`. Always get the ratio through `engineRatio(setup)` (1 / reduction for custom engines), never from `findEngine` directly.
+  - Transient UI state (the speed slider, the "editing drivetrain" toggle) stays in component state so it doesn't flood the history.
 - **Use antd components** (`Form`, `Select`, `InputNumber`, `Slider`, `Segmented`, `Button`) before writing custom controls. Primary buttons are `type="primary" size="large" block`.
 - **Formatting is owned by oxfmt** (`.oxfmtrc.json`: no semicolons, single quotes, 120 cols, trailing commas). Don't hand-format against it. Run `npm run format`.
 - **Lint warnings fail the push.** If a rule is wrong for a specific line, use `// oxlint-disable-next-line <rule>` with a comment explaining why.

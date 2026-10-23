@@ -25,6 +25,8 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
   - Choose a manufacturer, model and version from presets for Garelli, Laura, Minarelli, Motobecane, Peugeot, Puch, Sachs, Tomos and Vespa.
   - Adjust the front/rear sprockets (belt pulleys on a Vespa), wheel size and tire width.
   - See the crankshaft-to-wheel ratio and the engine RPM at any speed from a slider.
+- **Shareable and saved setups:** the bike setup lives in the page link, so you can bookmark it or share it, and the link opens straight to the results. **My bikes** saves setups on your device so you can reopen them in one tap.
+- **Custom engines:** choose **Other / custom** and type the engine's reduction (crank to output sprocket, e.g. 5.05 : 1) for bikes not in the list.
 - **Gas mixing calculator:** pick a fuel-to-oil ratio (20:1 to 100:1) and an amount of gas to get the oil to add, in ml (plus fl oz in imperial).
 - **Imperial / metric toggle:** switches mph ↔ km/h, gallons ↔ litres and inches ↔ mm. The choice is remembered between visits.
 - **Light and dark themes:** follows your device's setting automatically. A Light · Auto · Dark switch in the header overrides it, and your choice is remembered. Both themes meet WCAG AA contrast.

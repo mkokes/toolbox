@@ -56,6 +56,17 @@ export function useAppStyles() {
 
     '.tb-stack': { display: 'flex', flexDirection: 'column', gap: token.margin },
 
+    // Back/Next row pinned to the bottom of the viewport on long forms.
+    '.tb-actions': {
+      position: 'sticky',
+      bottom: 0,
+      zIndex: 1,
+      marginTop: token.margin,
+      padding: `${token.paddingSM}px 0`,
+      background: token.colorBgLayout,
+      borderTop: `${token.lineWidth}px ${token.lineType} ${token.colorBorderSecondary}`,
+    },
+
     // Home page tool cards: the whole card is the link; red edge on hover/focus.
     '.tb-tool-card': {
       display: 'block',
