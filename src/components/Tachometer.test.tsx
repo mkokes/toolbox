@@ -40,4 +40,17 @@ describe('Tachometer', () => {
     expect(container.querySelector('.tb-gauge-readout')).toHaveTextContent('15000')
     expect(screen.getByTestId('gauge-progress').getAttribute('d')).not.toMatch(/NaN/)
   })
+
+  it('uses a smaller readout for five-digit speeds so it clears the dial labels', () => {
+    const { container, rerender } = renderGauge(9999)
+    expect(container.querySelector('.tb-gauge-value')).not.toHaveClass('tb-gauge-value--long')
+    rerender(
+      <ThemeProvider>
+        <ThemedConfig>
+          <Tachometer rpm={10000} />
+        </ThemedConfig>
+      </ThemeProvider>,
+    )
+    expect(container.querySelector('.tb-gauge-value')).toHaveClass('tb-gauge-value--long')
+  })
 })

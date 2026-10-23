@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- New app-like look. A near-black "tuner" theme with the RPM gauge as the star: a big dial that fills in green up to the needle, a large speed readout, and rounded tiles for speed and gear ratio. The light theme keeps the same layout on a warm off-white. The Light · Auto · Dark switch stays, now a small pill beside the title.
+- Selects and number fields are rounded tiles with small uppercase labels, the steps are slim progress bars, the speed slider is thicker with a larger handle, and the home cards are bigger tiles.
+- The styleguide shows the new palette (tile, raised and muted colors, gauge colors) and the new components.
 - The Back/Next footer on the gearing and gas mixing pages now looks like its own bar: a raised surface with a soft shadow, running edge to edge and pinned to the very bottom of the screen.
 - Form controls no longer show through or poke above the footer when you scroll.
 - A soft fade and down arrow appears above the footer while there's more page to scroll, and goes away at the bottom.

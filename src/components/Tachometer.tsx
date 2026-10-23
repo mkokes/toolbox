@@ -107,7 +107,10 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
         <circle cx={CX} cy={CY} r={7} fill={brand.needle} />
       </svg>
       <figcaption className="tb-result tb-gauge-readout">
-        <div className="tb-result-value tb-gauge-value" aria-live="polite">
+        <div
+          className={`tb-result-value tb-gauge-value${String(rpm).length > 4 ? ' tb-gauge-value--long' : ''}`}
+          aria-live="polite"
+        >
           {rpm}
         </div>
         <div className="tb-result-label tb-gauge-caption">RPM</div>

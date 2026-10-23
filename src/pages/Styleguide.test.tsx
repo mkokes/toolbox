@@ -4,7 +4,7 @@ import { contrast } from '../lib/contrast'
 import { renderRoute } from '../test/render'
 import { brand, palettes } from '../theme/tokens'
 
-const hex = (mode: 'dark' | 'light', key: string) =>
+const roleHex = (mode: 'dark' | 'light', key: string) =>
   (key in brand[mode] ? brand[mode][key as 'gaugeTrack'] : palettes[mode][key as 'colorBgContainer']) as string
 
 describe('Styleguide', () => {
@@ -41,7 +41,7 @@ describe('Styleguide', () => {
       const panel = within(screen.getByTestId(`palette-${mode}`))
       for (const key of ['colorBgContainer', 'colorBgElevated', 'colorTextSecondary', 'gaugeTrack', 'needle']) {
         expect(panel.getByText(key)).toBeInTheDocument()
-        expect(panel.getAllByText(hex(mode, key)).length).toBeGreaterThan(0)
+        expect(panel.getAllByText(roleHex(mode, key)).length).toBeGreaterThan(0)
       }
     }
   })

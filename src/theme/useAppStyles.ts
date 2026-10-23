@@ -62,6 +62,11 @@ export function useAppStyles() {
     '.ant-select-filled:not(.ant-select-disabled) .ant-select-selector, .ant-input-number-filled, .ant-input-filled, .ant-input-number-group-addon':
       { background: token.colorBgContainer },
 
+    // antd's keyboard focus ring on the switches is a dim shade of the primary on dark; use the heading red.
+    '.ant-segmented.ant-segmented:focus-visible, .ant-segmented.ant-segmented .ant-segmented-item-focused': {
+      outlineColor: brand.colorHeading,
+    },
+
     // Progress through a multi-step flow: slim bars, filled up to the current step.
     '.tb-steps': {
       display: 'flex',
@@ -193,6 +198,8 @@ export function useAppStyles() {
         fontWeight: 700,
         lineHeight: 1.1,
         fontVariantNumeric: 'tabular-nums',
+        // Five digits would run into the dial's 0 and 12 labels, so they are set smaller.
+        '&.tb-gauge-value--long': { fontSize: token.fontSizeHeading1 * 0.85 },
       },
       '.tb-gauge-caption': {
         color: token.colorTextSecondary,
