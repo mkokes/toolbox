@@ -3,3 +3,4 @@ dist
 .npm
 *.local
 *.tsbuildinfo
+.vite

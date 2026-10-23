@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { Button, Divider, Form, Input, InputNumber, Select, Slider, Steps, Table, Tag, Typography } from 'antd'
 import PageHeader from '../components/PageHeader'
 import ResultStat from '../components/ResultStat'
+import UnitToggle from '../components/UnitToggle'
 import { type ColorName, buttonGradient, colorRoles, colors, fontSizes, fonts, layout, space } from '../theme/tokens'
 import { antdTheme } from '../theme/antdTheme'
 
@@ -16,7 +17,7 @@ const luminance = (hex: string) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 const contrast = (a: string, b: string) => {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+  const [hi, lo] = [luminance(a), luminance(b)].toSorted((x, y) => y - x)
   return (hi + 0.05) / (lo + 0.05)
 }
 
@@ -73,8 +74,8 @@ export default function Styleguide() {
       <PageHeader>Styleguide</PageHeader>
       <Paragraph>
         The Moped Toolbox theme, carried over from the original SCSS. Every value on this page is read from{' '}
-        <Text code>src/theme/tokens.ts</Text> and <Text code>src/theme/antdTheme.ts</Text>, so update those files
-        rather than hard-coding colors in components.
+        <Text code>src/theme/tokens.ts</Text> and <Text code>src/theme/antdTheme.ts</Text>, so update those files rather
+        than hard-coding colors in components.
       </Paragraph>
 
       <Section title="Colors">
@@ -96,8 +97,8 @@ export default function Styleguide() {
             section headings.
           </li>
           <li>
-            <Text style={{ color: colors.green }}>Green</Text> marks things you read: calculated results, the site
-            title and links.
+            <Text style={{ color: colors.green }}>Green</Text> marks things you read: calculated results, the site title
+            and links.
           </li>
           <li>Keep to a single column with full-width controls; the app is phone-first.</li>
         </ul>
@@ -154,7 +155,11 @@ export default function Styleguide() {
         <Divider />
         <Form layout="vertical">
           <Form.Item label="Select">
-            <Select size="large" placeholder="Please Select A Manufacturer" options={[{ value: 'Puch', label: 'Puch' }]} />
+            <Select
+              size="large"
+              placeholder="Please Select A Manufacturer"
+              options={[{ value: 'Puch', label: 'Puch' }]}
+            />
           </Form.Item>
           <Form.Item label="Input">
             <Input size="large" placeholder="Text input" />
@@ -166,7 +171,9 @@ export default function Styleguide() {
             <Slider defaultValue={30} min={1} max={100} />
           </Form.Item>
         </Form>
-        <Steps size="small" responsive={false} current={0} items={[{ title: 'Bike' }, { title: 'RPM & MPH' }]} />
+        <Steps size="small" responsive={false} current={0} items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]} />
+        <Divider />
+        <UnitToggle />
         <Divider />
         <ResultStat label="ResultStat" value="14.20:1" />
       </Section>

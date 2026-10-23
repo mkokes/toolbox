@@ -1,4 +1,5 @@
-[{
+[
+  {
     "manufacturer": "Puch",
     "model": "E50",
     "type": "1 Speed",
@@ -10,7 +11,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43.0,
     "crodlength": 90
-}, {
+  },
+  {
     "manufacturer": "Puch",
     "model": "ZA50",
     "version": "1 HP",
@@ -24,7 +26,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43.0,
     "crodlength": 90
-}, {
+  },
+  {
     "manufacturer": "Puch",
     "model": "ZA50",
     "version": "1.5 - 2 HP",
@@ -38,7 +41,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43.0,
     "crodlength": 90
-}, {
+  },
+  {
     "manufacturer": "Minarelli",
     "model": "v1",
     "type": "1 Speed",
@@ -47,9 +51,10 @@
     "defaultrear": 42,
     "defaultwheel": 16,
     "defaulttire": 2.25,
-    "pistondiamter":38.8,
+    "pistondiamter": 38.8,
     "strokelength": 43.0
-}, {
+  },
+  {
     "manufacturer": "Sachs",
     "model": "505",
     "type": "1 Speed",
@@ -60,7 +65,8 @@
     "defaulttire": 2.25,
     "pistondiamter": 38.0,
     "strokelength": 42.0
-}, {
+  },
+  {
     "manufacturer": "Garelli",
     "model": "NOI",
     "type": "1 Speed",
@@ -71,7 +77,8 @@
     "defaulttire": 2.25,
     "pistondiamter": 38.0,
     "strokelength": 39.0
-}, {
+  },
+  {
     "manufacturer": "Garelli",
     "model": "Vertical",
     "version": "2 Speed",
@@ -84,7 +91,8 @@
     "defaulttire": 2.25,
     "pistondiamter": 38.0,
     "strokelength": 39.0
-}, {
+  },
+  {
     "manufacturer": "Laura",
     "model": "M48",
     "type": "1 Speed",
@@ -93,10 +101,11 @@
     "defaultfront": 11,
     "defaultrear": 48,
     "defaultwheel": 16,
-    "defaulttire": 2.00,
+    "defaulttire": 2.0,
     "pistondiamter": 38.0,
     "strokelength": 38.0
-}, {
+  },
+  {
     "manufacturer": "Laura",
     "model": "M48",
     "type": "1 Speed",
@@ -105,10 +114,11 @@
     "defaultfront": 13,
     "defaultrear": 50,
     "defaultwheel": 16,
-    "defaulttire": 2.00,
+    "defaulttire": 2.0,
     "pistondiamter": 38.0,
     "strokelength": 38.0
-}, {
+  },
+  {
     "manufacturer": "Laura",
     "model": "M56",
     "type": "1 Speed",
@@ -117,10 +127,11 @@
     "defaultfront": 13,
     "defaultrear": 39,
     "defaultwheel": 16,
-    "defaulttire": 2.00,
+    "defaulttire": 2.0,
     "pistondiamter": 38.0,
     "strokelength": 38.0
-}, {
+  },
+  {
     "manufacturer": "Laura",
     "model": "M56",
     "type": "1 Speed",
@@ -129,10 +140,11 @@
     "defaultfront": 17,
     "defaultrear": 39,
     "defaultwheel": 16,
-    "defaulttire": 2.00,
+    "defaulttire": 2.0,
     "pistondiamter": 38.0,
     "strokelength": 38.0
-}, {
+  },
+  {
     "manufacturer": "Peugeot",
     "model": "103",
     "type": "variated",
@@ -145,7 +157,8 @@
     "pistondiamter": 38.0,
     "strokelength": 39.1,
     "crodlength": 75.5
-}, {
+  },
+  {
     "manufacturer": "Peugeot",
     "model": "103",
     "type": "variated",
@@ -158,7 +171,8 @@
     "pistondiamter": 38.0,
     "strokelength": 39.1,
     "crodlength": 75.5
-}, {
+  },
+  {
     "manufacturer": "Motobecane",
     "model": "AV7/AV10",
     "type": "variated",
@@ -170,7 +184,8 @@
     "defaulttire": 2.25,
     "pistondiamter": 38.0,
     "strokelength": 41.6
-}, {
+  },
+  {
     "manufacturer": "Motobecane",
     "model": "AV7/AV10",
     "type": "variated",
@@ -182,7 +197,8 @@
     "defaulttire": 2.25,
     "pistondiamter": 38.0,
     "strokelength": 41.6
-}, {
+  },
+  {
     "manufacturer": "Vespa",
     "model": "Piaggio",
     "type": "Single Speed",
@@ -195,7 +211,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43,
     "crodlength": 86
-}, {
+  },
+  {
     "manufacturer": "Vespa",
     "model": "Piaggio",
     "type": "Single Speed",
@@ -208,7 +225,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43,
     "crodlength": 86
-}, {
+  },
+  {
     "manufacturer": "Vespa",
     "model": "Piaggio",
     "type": "Single Speed",
@@ -221,7 +239,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43,
     "crodlength": 86
-}, {
+  },
+  {
     "manufacturer": "Vespa",
     "model": "Piaggio",
     "type": "Single Speed",
@@ -234,7 +253,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43,
     "crodlength": 86
-}, {
+  },
+  {
     "manufacturer": "Tomos",
     "model": "A35/A55",
     "type": "2 Speed",
@@ -247,7 +267,8 @@
     "pistondiamter": 38.0,
     "strokelength": 43.0,
     "crodlength": 90
-}, {
+  },
+  {
     "manufacturer": "Tomos",
     "model": "A3",
     "type": "2 Speed",
@@ -260,4 +281,5 @@
     "pistondiamter": 38.0,
     "strokelength": 43.0,
     "crodlength": 90
-}]
+  }
+]
