@@ -111,6 +111,22 @@ export function useAppStyles() {
     '.tb-result-label': { fontSize: token.fontSizeXL },
     '.tb-result-value': { fontSize: token.fontSizeHeading2, fontVariantNumeric: 'tabular-nums' },
 
+    // Calculated results: a rounded tile with a big accent value over a small uppercase caption.
+    '.tb-stat-tile': {
+      flex: 1,
+      marginBottom: 0,
+      padding: `${token.paddingSM}px ${token.paddingXS}px`,
+      background: token.colorBgContainer,
+      borderRadius: token.borderRadiusLG,
+      '.tb-result-value': { fontWeight: 700 },
+      '.tb-result-label': {
+        color: token.colorTextSecondary,
+        fontSize: token.fontSizeSM,
+        letterSpacing: token.fontSizeSM * 0.06,
+        textTransform: 'uppercase',
+      },
+    },
+
     // The gauge's big readout sits in the open bottom of the dial.
     '.tb-gauge-readout': {
       position: 'relative',

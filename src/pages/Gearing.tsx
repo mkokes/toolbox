@@ -380,14 +380,10 @@ function Results({
         <Text type="secondary">{describeDrivetrain(setup, units)}</Text>
       </Flex>
       <Tachometer rpm={calcRpm(internal, external, mph, circumference)} />
-      <Row>
-        <Col span={12}>
-          <ResultStat label={labels.speed} value={speed} />
-        </Col>
-        <Col span={12}>
-          <ResultStat label="Crank To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
-        </Col>
-      </Row>
+      <Flex gap={token.marginXS}>
+        <ResultStat label={labels.speed} value={speed} />
+        <ResultStat label="Crank To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
+      </Flex>
       <Slider
         min={1}
         max={MAX_SPEED[units]}

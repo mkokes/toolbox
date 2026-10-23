@@ -60,6 +60,38 @@ export const palettes: Record<ThemeMode, Token> = {
   },
 }
 
+/** Slider: a thick rail and a big ring handle, easy to hit with a thumb. Green on dark, red on light. */
+type SliderToken = NonNullable<NonNullable<ThemeConfig['components']>['Slider']>
+
+const sliderShape: SliderToken = {
+  railSize: 10,
+  handleSize: 24,
+  handleSizeHover: 28,
+  handleLineWidth: 5,
+  handleLineWidthHover: 6,
+}
+
+export const sliderToken: Record<ThemeMode, SliderToken> = {
+  dark: {
+    ...sliderShape,
+    railBg: '#2C2B28',
+    railHoverBg: '#3A3935',
+    trackBg: green,
+    trackHoverBg: green,
+    handleColor: green,
+    handleActiveColor: green,
+  },
+  light: {
+    ...sliderShape,
+    railBg: '#DEDCD4',
+    railHoverBg: '#CFCDC4',
+    trackBg: red,
+    trackHoverBg: red,
+    handleColor: red,
+    handleActiveColor: red,
+  },
+}
+
 /** Values antd has no token for. Read them with `useBrandToken()`. */
 export interface BrandToken {
   /** Lobster, used for the site title */
