@@ -28,7 +28,7 @@ export default function MixGas() {
     <section>
       <PageHeader>Mix Your Oil &amp; Fuel</PageHeader>
       <UnitToggle />
-      <output className="tb-callout" style={{ display: 'block' }}>
+      <output className="tb-callout">
         {ml !== null
           ? units === 'imperial'
             ? `Add ${ml}ml (${round(mlToFlOz(ml), 1)} fl oz) of oil to your gas`

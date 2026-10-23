@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { manifest } from './pwa'
-import { colors } from './theme/tokens'
+import { pageBackground } from './theme/tokens'
 
 // Files that will be served from the site root (public/), as seen by Vite.
 const publicFiles = Object.keys(import.meta.glob('../public/*', { query: '?url' })).map((p) =>
@@ -26,8 +26,8 @@ describe('web app manifest', () => {
   })
 
   it('takes its colors from the theme tokens', () => {
-    expect(manifest.theme_color).toBe(colors.background)
-    expect(manifest.background_color).toBe(colors.background)
+    expect(manifest.theme_color).toBe(pageBackground('dark'))
+    expect(manifest.background_color).toBe(pageBackground('dark'))
   })
 
   it('opens as a standalone app', () => {

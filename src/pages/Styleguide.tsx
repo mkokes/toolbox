@@ -1,142 +1,232 @@
-import type { CSSProperties, ReactNode } from 'react'
-import { Button, Divider, Form, Input, InputNumber, Select, Slider, Steps, Table, Tag, Typography } from 'antd'
+import type { ReactNode } from 'react'
+import {
+  Button,
+  ConfigProvider,
+  Divider,
+  Flex,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Slider,
+  Steps,
+  Table,
+  Tag,
+  Typography,
+  theme,
+} from 'antd'
 import PageHeader from '../components/PageHeader'
 import ResultStat from '../components/ResultStat'
+import Tachometer from '../components/Tachometer'
+import ThemeToggle from '../components/ThemeToggle'
 import UnitToggle from '../components/UnitToggle'
-import { type ColorName, buttonGradient, colorRoles, colors, fontSizes, fonts, layout, space } from '../theme/tokens'
-import { antdTheme } from '../theme/antdTheme'
+import { useBrandToken, useTheme } from '../context/ThemeContext'
+import { AA_LARGE_TEXT, AA_TEXT, contrast } from '../lib/contrast'
+import { getAntdTheme } from '../theme/antdTheme'
+import { baseToken, brand, colorRoles, palettes, type ThemeMode } from '../theme/tokens'
 
 const { Title, Paragraph, Text } = Typography
 
-// WCAG relative luminance / contrast ratio
-const luminance = (hex: string) => {
-  const [r, g, b] = [1, 3, 5].map((i) => {
-    const c = parseInt(hex.slice(i, i + 2), 16) / 255
-    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
-  })
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b
-}
-const contrast = (a: string, b: string) => {
-  const [hi, lo] = [luminance(a), luminance(b)].toSorted((x, y) => y - x)
-  return (hi + 0.05) / (lo + 0.05)
-}
+const WHITE = baseToken.colorTextLightSolid as string
+
+/** The hex value behind a color role, for a mode. */
+const roleColor = (mode: ThemeMode, key: (typeof colorRoles)[number]['key']) =>
+  key === 'colorAccent' || key === 'colorHeading' ? brand[mode][key] : (palettes[mode][key] as string)
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
+  const { token } = theme.useToken()
   return (
-    <section style={{ marginBottom: space.lg }}>
-      <Title level={3} style={{ color: colors.green }}>
-        {title}
-      </Title>
+    <section style={{ marginBottom: token.marginXL }}>
+      <Title level={3}>{title}</Title>
       {children}
     </section>
   )
 }
 
-const swatchStyle = (bg: string): CSSProperties => ({
-  background: bg,
-  height: 56,
-  borderRadius: 8,
-  border: '1px solid rgba(235,235,235,0.2)',
-})
+function ContrastTag({ ratio, large }: { ratio: number; large?: boolean }) {
+  return <Tag color={ratio >= (large ? AA_LARGE_TEXT : AA_TEXT) ? 'success' : 'error'}>{ratio.toFixed(2)}:1</Tag>
+}
 
-function Swatch({ name, hex, role }: { name: string; hex: string; role?: string }) {
-  const ratio = contrast(hex, colors.background)
+/** One theme's colors, previewed on that theme's own background with its own antd theme. */
+function PalettePreview({ mode }: { mode: ThemeMode }) {
+  const bg = roleColor(mode, 'colorBgLayout')
+  const t = theme.getDesignToken(getAntdTheme(mode))
   return (
-    <div style={{ marginBottom: space.md }}>
-      <div style={swatchStyle(hex)} />
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: space.xxs }}>
-        <Text strong>${name}</Text>
-        <Text code copyable>
-          {hex}
-        </Text>
+    <ConfigProvider theme={getAntdTheme(mode)}>
+      <div
+        data-testid={`palette-${mode}`}
+        style={{
+          background: bg,
+          border: `${t.lineWidth}px solid ${t.colorBorder}`,
+          borderRadius: t.borderRadiusLG,
+          padding: t.padding,
+        }}
+      >
+        <Title level={4} style={{ marginTop: 0, textTransform: 'capitalize' }}>
+          {mode}
+        </Title>
+        {colorRoles.map(({ key, role }) => {
+          const hex = roleColor(mode, key)
+          return (
+            <Flex key={key} align="center" gap={t.marginSM} style={{ marginBottom: t.marginSM }}>
+              <div
+                aria-hidden
+                style={{
+                  background: hex,
+                  width: t.controlHeightLG,
+                  height: t.controlHeightLG,
+                  borderRadius: t.borderRadius,
+                  border: `${t.lineWidth}px solid ${t.colorBorder}`,
+                  flexShrink: 0,
+                }}
+              />
+              <Flex vertical flex={1}>
+                <Text strong>{key}</Text>
+                <Text type="secondary">{role}</Text>
+              </Flex>
+              <Flex vertical align="end" gap={t.marginXXS}>
+                <Text code copyable>
+                  {hex}
+                </Text>
+                {key === 'colorPrimary' && <ContrastTag ratio={contrast(WHITE, hex)} />}
+                {key !== 'colorPrimary' && key !== 'colorBgLayout' && (
+                  <ContrastTag ratio={contrast(hex, bg)} large={key === 'colorHeading'} />
+                )}
+              </Flex>
+            </Flex>
+          )
+        })}
       </div>
-      {role && <Text type="secondary">{role}</Text>}
-      {name !== 'background' && (
-        <div>
-          <Tag color={ratio >= 4.5 ? 'success' : ratio >= 3 ? 'warning' : 'error'} style={{ marginTop: space.xxs }}>
-            {ratio.toFixed(2)}:1 on background
-          </Tag>
-        </div>
-      )}
-    </div>
+    </ConfigProvider>
   )
 }
 
-const tokenRows = Object.entries(antdTheme.token ?? {}).map(([token, value]) => ({
-  key: token,
-  token,
-  value: String(value),
-}))
+const typeScale = [
+  'fontSizeSM',
+  'fontSize',
+  'fontSizeLG',
+  'fontSizeXL',
+  'fontSizeHeading4',
+  'fontSizeHeading3',
+  'fontSizeHeading2',
+  'fontSizeHeading1',
+] as const
+
+const spaceScale = [
+  'marginXXS',
+  'marginXS',
+  'marginSM',
+  'margin',
+  'marginMD',
+  'marginLG',
+  'marginXL',
+  'marginXXL',
+] as const
 
 export default function Styleguide() {
+  const { token } = theme.useToken()
+  const brandToken = useBrandToken()
+  const { resolved } = useTheme()
+  const g = brandToken.buttonGradient
+  const tokenRows = Object.entries({ ...baseToken, ...palettes[resolved] }).map(([name, value]) => ({
+    key: name,
+    name,
+    value: String(value),
+  }))
+
   return (
     <div>
       <PageHeader>Styleguide</PageHeader>
       <Paragraph>
-        The Moped Toolbox theme, carried over from the original SCSS. Every value on this page is read from{' '}
-        <Text code>src/theme/tokens.ts</Text> and <Text code>src/theme/antdTheme.ts</Text>, so update those files rather
-        than hard-coding colors in components.
+        Every style in the app comes from antd design tokens defined in <Text code>src/theme/tokens.ts</Text>.
+        Components read them with <Text code>theme.useToken()</Text>, plus <Text code>useBrandToken()</Text> for the
+        display font, accent green and button gradient, so nothing is hard-coded and both themes stay consistent.
       </Paragraph>
 
-      <Section title="Colors">
-        {(Object.keys(colors) as ColorName[]).map((name) => (
-          <Swatch key={name} name={name} hex={colors[name]} role={colorRoles[name]} />
-        ))}
+      <Section title="Themes">
+        <Flex justify="center" style={{ marginBottom: token.margin }}>
+          <ThemeToggle />
+        </Flex>
+        <Flex vertical gap={token.margin}>
+          <PalettePreview mode="dark" />
+          <PalettePreview mode="light" />
+        </Flex>
         <Title level={5}>Button gradient</Title>
-        <div style={swatchStyle(`linear-gradient(90deg, ${buttonGradient.start}, ${buttonGradient.end})`)} />
-        <Paragraph type="secondary" style={{ marginTop: space.xxs }}>
-          Default {buttonGradient.start} → {buttonGradient.end} · hover {buttonGradient.hoverStart} →{' '}
-          {buttonGradient.hoverEnd} · active {buttonGradient.active}
+        <div
+          aria-hidden
+          style={{
+            height: token.controlHeightLG,
+            borderRadius: token.borderRadiusLG,
+            background: `linear-gradient(90deg, ${g.start}, ${g.end})`,
+          }}
+        />
+        <Paragraph type="secondary" style={{ marginTop: token.marginXXS }}>
+          Default {g.start} → {g.end} · hover {g.hoverStart} → {g.hoverEnd} · active {g.active}
         </Paragraph>
       </Section>
 
       <Section title="Usage">
-        <ul style={{ paddingLeft: '1.25rem', margin: 0 }}>
+        <ul style={{ paddingLeft: token.paddingLG, margin: 0 }}>
           <li>
-            <Text style={{ color: colors.red }}>Red</Text> marks things you act on (buttons, sliders, focus rings) and
+            <Text style={{ color: token.colorPrimary }}>Red</Text> marks things you act on (buttons, sliders, focus) and
             section headings.
           </li>
           <li>
-            <Text style={{ color: colors.green }}>Green</Text> marks things you read: calculated results, the site title
-            and links.
+            <Text style={{ color: brandToken.colorAccent }}>Green</Text> marks things you read: calculated results, the
+            site title and links.
           </li>
           <li>Keep to a single column with full-width controls; the app is phone-first.</li>
+          <li>Never hard-code a color, size or font outside src/theme/. Read it from the tokens.</li>
         </ul>
       </Section>
 
       <Section title="Typography">
         <h1 className="tb-title">Moped Toolbox</h1>
         <Text type="secondary">
-          Site title: <Text code>{fonts.display}</Text>, {fontSizes.title}, green
+          Site title: <Text code>{brandToken.fontFamilyDisplay}</Text> at fontSizeHeading2 ({token.fontSizeHeading2}px)
         </Text>
         <Divider />
         <PageHeader>Section Heading</PageHeader>
-        <Text type="secondary">Page heading: antd Title level 2, red, centered</Text>
+        <Text type="secondary">Title level 2 in colorHeading</Text>
         <Divider />
-        <Paragraph>
-          Body copy is set in the system font stack at {fontSizes.body} in <Text code>{colors.type}</Text>.
+        <ResultStat label="Result label · fontSizeXL" value="Value · fontSizeHeading2" />
+        <div className="tb-callout">Callout · fontSizeHeading4</div>
+        <Divider />
+        {typeScale.map((name) => (
+          <Flex key={name} justify="space-between" align="baseline">
+            <Text style={{ fontSize: token[name] }}>Aa</Text>
+            <Text type="secondary">
+              {name} · {token[name]}px
+            </Text>
+          </Flex>
+        ))}
+        <Paragraph type="secondary" style={{ marginTop: token.margin }}>
+          <Text code>{token.fontFamily}</Text>
         </Paragraph>
-        <Text type="secondary">
-          <Text code>{fonts.body}</Text>
-        </Text>
-        <Divider />
-        <ResultStat label={`Result label · ${fontSizes.resultLabel}`} value={`${fontSizes.resultValue} value`} />
-        <div className="tb-callout">Callout · {fontSizes.callout}</div>
       </Section>
 
-      <Section title="Spacing & layout">
-        {Object.entries(space).map(([name, value]) => (
-          <div key={name} style={{ display: 'flex', alignItems: 'center', gap: space.md, marginBottom: space.xs }}>
-            <Text code style={{ width: 48 }}>
+      <Section title="Spacing, shape & layout">
+        {spaceScale.map((name) => (
+          <Flex key={name} align="center" gap={token.margin} style={{ marginBottom: token.marginXS }}>
+            <Text code style={{ minWidth: token.controlHeightLG * 2 }}>
               {name}
             </Text>
-            <div style={{ width: value, height: 16, background: colors.red, borderRadius: 2 }} />
-            <Text type="secondary">{value}</Text>
-          </div>
+            <div
+              aria-hidden
+              style={{
+                width: token[name],
+                height: token.marginSM,
+                background: token.colorPrimary,
+                borderRadius: token.borderRadiusXS,
+              }}
+            />
+            <Text type="secondary">{token[name]}px</Text>
+          </Flex>
         ))}
-        <Paragraph type="secondary" style={{ marginTop: space.md }}>
-          Content column: max-width {layout.maxWidth} ({parseFloat(layout.maxWidth) * 16}px), width {layout.width},
-          centered. Buttons are {layout.buttonHeight}px tall with a {layout.buttonRadius}px radius.
+        <Paragraph type="secondary" style={{ marginTop: token.margin }}>
+          Radii: borderRadius {token.borderRadius}px · borderRadiusLG {token.borderRadiusLG}px (pill buttons, cards).
+          Controls: {token.controlHeight}px, large {token.controlHeightLG}px. Content column:{' '}
+          {brandToken.contentMaxWidth}px.
         </Paragraph>
       </Section>
 
@@ -175,19 +265,21 @@ export default function Styleguide() {
         <Divider />
         <UnitToggle />
         <Divider />
+        <Tachometer rpm={6662} />
         <ResultStat label="ResultStat" value="14.20:1" />
       </Section>
 
-      <Section title="antd theme tokens">
+      <Section title="Theme tokens">
         <Paragraph type="secondary">
-          Applied through <Text code>ConfigProvider</Text> with <Text code>theme.darkAlgorithm</Text>.
+          Shared tokens plus the {resolved} palette, passed to <Text code>ConfigProvider</Text> with{' '}
+          <Text code>theme.{resolved === 'dark' ? 'darkAlgorithm' : 'defaultAlgorithm'}</Text>.
         </Paragraph>
         <Table
           size="small"
           pagination={false}
           dataSource={tokenRows}
           columns={[
-            { title: 'Token', dataIndex: 'token', render: (t: string) => <Text code>{t}</Text> },
+            { title: 'Token', dataIndex: 'name', render: (t: string) => <Text code>{t}</Text> },
             { title: 'Value', dataIndex: 'value' },
           ]}
         />

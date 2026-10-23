@@ -44,19 +44,22 @@ Before you finish, run `npm test`, `npm run build`, `npm run lint` and `npm run 
 
 ```
 src/
-  main.tsx              ConfigProvider (antd theme) → UnitsProvider → RouterProvider; injects CSS vars from tokens
-  App.tsx               layout shell; exports `routes` (/, /gearing, /mix, /styleguide [lazy]) and the hash `router`
+  main.tsx              ThemeProvider → ThemedConfig (antd ConfigProvider) → UnitsProvider → RouterProvider
+  App.tsx               layout shell (calls useAppStyles; header with ThemeToggle + logo); exports `routes` (/, /gearing, /mix, /styleguide [lazy]) and the hash `router`
   data/engines.json     engine presets; data/engines.ts = Engine type + lookups (manufacturers/models/versions/findEngine)
   lib/                  pure, framework-free logic
     gearing.ts          tireCircumference, calcRpm, calcMph, finalRatio
     mix.ts              oilMl(litres, ratio), mlToFlOz
     units.ts            UnitSystem, conversion constants and helpers, unitLabels
     options.ts          dropdown option generators (wheel, tire, ratio, sprockets/pulleys)
+    gauge.ts            tachometer geometry (rpmToAngle, polar, arcPath)
+    contrast.ts         WCAG contrast ratio + AA thresholds
   context/UnitsContext.tsx   useUnits(): shared imperial/metric choice, persisted to localStorage ("toolbox.units")
-  components/           PageHeader, ResultStat, BackButton, UnitToggle
+  context/ThemeContext.tsx   useTheme() (light/dark/system, "toolbox.theme"), useBrandToken(), ThemedConfig
+  components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer
   pages/                Home, Gearing, MixGas, Styleguide
-  theme/                tokens.ts (source of truth) → antdTheme.ts + cssVars → global.css
-  test/                 setup.ts (jsdom shims), render.tsx (renderRoute), antd.ts (choose)
+  theme/                tokens.ts (every style value) → antdTheme.ts (getAntdTheme) + useAppStyles.ts (CSS-in-JS)
+  test/                 setup.ts (jsdom shims), matchMedia.ts (setSystemDark), render.tsx (renderRoute), antd.ts (choose)
 ```
 
 ## Conventions
@@ -67,10 +70,16 @@ src/
   - Fuel volume goes through litres (`volumeToLitres`/`volumeFromLitres`).
   - Wheel and tire option _values_ are always inches, because that's what `engines.json` uses. Only the labels change with the unit system.
   - Don't round the canonical value. Round only what you display, so toggling units doesn't drift results.
-- **Styling comes from tokens.** Colors, fonts, spacing and button metrics live in `src/theme/tokens.ts`.
-  - `antdTheme.ts` maps them onto antd tokens.
-  - `cssVars` exposes them as `--tb-*` custom properties for `global.css`.
-  - Don't hard-code hex values in components. The `/styleguide` page renders straight from these files, so it updates itself.
+- **All styling comes from antd design tokens. There are no CSS files, CSS variables or Less.**
+  - `src/theme/tokens.ts` is the only place style values are written:
+    - `baseToken` holds the shared type, shape and spacing, under antd token names. antd derives `marginXXS…marginXXL` from `sizeUnit`/`sizeStep`.
+    - `palettes.light`/`palettes.dark` hold the color tokens.
+    - `brand.light`/`brand.dark` hold what antd has no token for: the Lobster display font, the accent green, the page-heading red, the button gradient and the content width.
+  - `getAntdTheme(mode)` (`antdTheme.ts`) feeds `ConfigProvider`. Prefer component tokens to CSS overrides.
+  - **In components,** read values with `const { token } = theme.useToken()` and `useBrandToken()`. Never write a hex value, `px`/`rem` size or font name outside `src/theme/`. SVG viewBox geometry in `Tachometer` is the one exception.
+  - **For styling that isn't a component prop** (global rules, the `tb-*` classes), add it to `useAppStyles.ts`. It uses antd's engine (`useStyleRegister` from `@ant-design/cssinjs`), so it re-themes automatically.
+  - **Don't set antd's `colorTextHeading`** to make headings red. It also colors form labels, card titles, table headers and about 15 other components. Page headings use `brand.colorHeading` through `.tb-heading`.
+  - **Both themes must pass contrast.** `tokens.test.ts` enforces it, and `/styleguide` shows both palettes side by side.
 - **Use antd components** (`Form`, `Select`, `InputNumber`, `Slider`, `Segmented`, `Button`) before writing custom controls. Primary buttons are `type="primary" size="large" block`.
 - **Formatting is owned by oxfmt** (`.oxfmtrc.json`: no semicolons, single quotes, 120 cols, trailing commas). Don't hand-format against it. Run `npm run format`.
 - **Lint warnings fail the push.** If a rule is wrong for a specific line, use `// oxlint-disable-next-line <rule>` with a comment explaining why.
@@ -102,6 +111,8 @@ src/
   - Edit `public/icon.svg`, run `npm run icons` (config in `pwa-assets.config.ts`), and commit the PNG/ICO output.
   - The "M" in the SVG is the Lobster glyph converted to a path. Don't replace it with `<text>`: the icon renderer has no Lobster font.
   - `tsconfig.node.json` lists `src/pwa.ts` and `src/theme/tokens.ts` because `vite.config.ts` imports them, and composite projects must list every file.
+- **Theme bootstrapping:** an inline script in `index.html` sets `data-theme` and the page background before React loads, so there's no flash. It hard-codes the two page backgrounds and the `toolbox.theme` key; `theme.test.ts` checks they match `tokens.ts` and `ThemeContext`. The PWA manifest colors are the dark ones (a manifest can't vary by theme), and `<meta name="theme-color">` follows the active theme.
+- **Theme in tests:** jsdom has no `prefers-color-scheme`. `src/test/matchMedia.ts` provides the stub: tests default to light, and `setSystemDark(true)` simulates a dark OS, including live change events.
 - **Bundle chunks:** `react` and `antd` are split into vendor chunks in `vite.config.ts`, and the styleguide route is lazy-loaded. Keep heavy, rarely used pages lazy.
 
 ## Workflow

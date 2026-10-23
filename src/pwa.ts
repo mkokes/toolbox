@@ -1,5 +1,5 @@
 import type { ManifestOptions } from 'vite-plugin-pwa'
-import { colors } from './theme/tokens'
+import { pageBackground } from './theme/tokens'
 
 // Web app manifest. Paths are relative so the app installs correctly under the GitHub Pages sub-path.
 // Icon files are generated from public/icon.svg by `npm run icons`.
@@ -12,8 +12,8 @@ export const manifest: Partial<ManifestOptions> = {
   scope: './',
   display: 'standalone',
   orientation: 'portrait',
-  theme_color: colors.background,
-  background_color: colors.background,
+  theme_color: pageBackground('dark'),
+  background_color: pageBackground('dark'),
   categories: ['utilities', 'productivity'],
   icons: [
     { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },

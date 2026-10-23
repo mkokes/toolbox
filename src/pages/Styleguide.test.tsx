@@ -1,19 +1,31 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { renderRoute } from '../test/render'
-import { colors } from '../theme/tokens'
+import { brand, palettes } from '../theme/tokens'
 
 describe('Styleguide', () => {
-  it('renders every brand color from the tokens', async () => {
+  it('previews both themes with their colors from the tokens', async () => {
     renderRoute('/styleguide')
     expect(await screen.findByRole('heading', { name: 'Styleguide' })).toBeInTheDocument()
-    for (const hex of Object.values(colors)) {
-      expect(screen.getAllByText(hex).length).toBeGreaterThan(0)
+
+    for (const mode of ['dark', 'light'] as const) {
+      const panel = within(screen.getByTestId(`palette-${mode}`))
+      // Light mode uses the same red for headings and buttons, so a hex can appear more than once.
+      for (const hex of [palettes[mode].colorBgLayout, brand[mode].colorHeading, brand[mode].colorAccent]) {
+        expect(panel.getAllByText(hex as string).length).toBeGreaterThan(0)
+      }
     }
   })
 
-  it('flags red text on the background as low contrast', async () => {
+  it('shows every color passing contrast in both themes', async () => {
     renderRoute('/styleguide')
-    expect(await screen.findByText('2.61:1 on background')).toBeInTheDocument()
+    await screen.findByRole('heading', { name: 'Styleguide' })
+    // The dark-mode heading red was 2.61:1 in v2.0.0; it's now lightened to pass for large text.
+    expect(within(screen.getByTestId('palette-dark')).getByText('3.68:1')).toBeInTheDocument()
+    for (const mode of ['dark', 'light']) {
+      const panel = screen.getByTestId(`palette-${mode}`)
+      expect(panel.querySelectorAll('.ant-tag-error')).toHaveLength(0)
+      expect(panel.querySelectorAll('.ant-tag-success').length).toBeGreaterThan(0)
+    }
   })
 })

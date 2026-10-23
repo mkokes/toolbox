@@ -1,14 +1,32 @@
+import { Flex, theme } from 'antd'
 import { Link, Outlet, createHashRouter, type RouteObject } from 'react-router-dom'
+import ThemeToggle from './components/ThemeToggle'
+import { useAppStyles } from './theme/useAppStyles'
 import Home from './pages/Home'
 import Gearing from './pages/Gearing'
 import MixGas from './pages/MixGas'
 
 function Layout() {
+  useAppStyles()
+  const { token } = theme.useToken()
   return (
     <div className="tb-wrapper">
       <header>
+        <Flex justify="flex-end" style={{ paddingTop: token.paddingXS }}>
+          <ThemeToggle />
+        </Flex>
         <h1 className="tb-title">
-          <Link to="/">Moped Toolbox</Link>
+          <Link to="/">
+            <Flex align="center" justify="center" gap={token.marginXS}>
+              <img
+                src={`${import.meta.env.BASE_URL}icon.svg`}
+                alt=""
+                width={token.controlHeight}
+                height={token.controlHeight}
+              />
+              Moped Toolbox
+            </Flex>
+          </Link>
         </h1>
       </header>
       <main>
