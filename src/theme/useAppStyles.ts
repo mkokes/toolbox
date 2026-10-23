@@ -105,6 +105,9 @@ export function useAppStyles() {
       boxShadow: `0 -${token.sizeXXS}px ${token.sizeSM}px ${token.colorFillSecondary}`,
     },
 
+    // The footer bar shown in place on the styleguide.
+    '.tb-actions.tb-actions--static': { position: 'static', margin: 0, borderRadius: token.borderRadiusLG },
+
     // "More below" cue: a fade and chevron at the bottom of the screen (above the action bar, if any).
     '.tb-scroll-hint': {
       position: 'fixed',

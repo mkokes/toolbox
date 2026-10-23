@@ -178,12 +178,23 @@ export const brand: Record<ThemeMode, BrandToken> = {
 
 /** What each color is for, shown on the styleguide. */
 export const colorRoles = [
-  { key: 'colorBgLayout', role: 'Page background' },
-  { key: 'colorTextBase', role: 'Body text' },
-  { key: 'colorAccent', role: 'Accent: site title, calculated results and links' },
-  { key: 'colorHeading', role: 'Page headings' },
-  { key: 'colorPrimary', role: 'Primary: buttons, sliders and focus (white text on top)' },
-] as const
+  { key: 'colorBgLayout', role: 'Page background', against: 'none' },
+  { key: 'colorBgContainer', role: 'Tiles: fields, stat tiles and cards', against: 'none' },
+  { key: 'colorBgElevated', role: 'Raised surfaces: the footer bar and popups', against: 'none' },
+  { key: 'colorTextBase', role: 'Body text', against: 'page' },
+  { key: 'colorTextSecondary', role: 'Muted text: labels, captions and hints', against: 'page' },
+  { key: 'colorAccent', role: 'Accent: site title, calculated results and links', against: 'page' },
+  { key: 'colorHeading', role: 'Page headings', against: 'page', large: true },
+  { key: 'colorPrimary', role: 'Primary: buttons, sliders and focus (white text on top)', against: 'white' },
+  { key: 'gaugeTrack', role: 'Gauge: the dim ring behind the filled arc', against: 'none' },
+  { key: 'needle', role: 'Gauge: needle and hub', against: 'page', large: true },
+] as const satisfies readonly {
+  key: string
+  role: string
+  /** What the color is checked against: the page background, white text on top of it, or nothing (a surface). */
+  against: 'page' | 'white' | 'none'
+  large?: boolean
+}[]
 
 /** A mode's page background, as a plain hex (used before React loads, and by the PWA manifest). */
 export const pageBackground = (mode: ThemeMode) => palettes[mode].colorBgLayout as string

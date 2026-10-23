@@ -4,6 +4,9 @@ import { contrast } from '../lib/contrast'
 import { renderRoute } from '../test/render'
 import { brand, palettes } from '../theme/tokens'
 
+const hex = (mode: 'dark' | 'light', key: string) =>
+  (key in brand[mode] ? brand[mode][key as 'gaugeTrack'] : palettes[mode][key as 'colorBgContainer']) as string
+
 describe('Styleguide', () => {
   it('previews both themes with their colors from the tokens', async () => {
     renderRoute('/styleguide')
@@ -29,5 +32,27 @@ describe('Styleguide', () => {
       expect(panel.querySelectorAll('.ant-tag-error')).toHaveLength(0)
       expect(panel.querySelectorAll('.ant-tag-success').length).toBeGreaterThan(0)
     }
+  })
+
+  it('documents the surface, muted text and gauge colors for both themes', async () => {
+    renderRoute('/styleguide')
+    await screen.findByRole('heading', { name: 'Styleguide' })
+    for (const mode of ['dark', 'light'] as const) {
+      const panel = within(screen.getByTestId(`palette-${mode}`))
+      for (const key of ['colorBgContainer', 'colorBgElevated', 'colorTextSecondary', 'gaugeTrack', 'needle']) {
+        expect(panel.getByText(key)).toBeInTheDocument()
+        expect(panel.getAllByText(hex(mode, key)).length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('shows the new components in their own sections', async () => {
+    renderRoute('/styleguide')
+    await screen.findByRole('heading', { name: 'Styleguide' })
+    for (const name of ['Gauge', 'Stat tiles', 'Controls', 'Footer bar']) {
+      expect(screen.getByRole('heading', { name })).toBeInTheDocument()
+    }
+    expect(screen.getByRole('img', { name: /engine speed/i })).toBeInTheDocument()
+    expect(screen.getByText('Step 1 of 2: Bike')).toBeInTheDocument()
   })
 })
