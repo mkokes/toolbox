@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Button, Col, Form, Row, Select, Slider, Steps } from 'antd'
+import { Button, Col, Form, Row, Select, Slider, Steps, theme } from 'antd'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import ResultStat from '../components/ResultStat'
+import Tachometer from '../components/Tachometer'
 import { type Engine, findEngine, manufacturers, models, versions } from '../data/engines'
 import UnitToggle from '../components/UnitToggle'
 import { useUnits } from '../context/UnitsContext'
@@ -39,6 +40,7 @@ export default function Gearing() {
   const [mph, setMph] = useState(30)
   const { units } = useUnits()
   const labels = unitLabels[units]
+  const { token } = theme.useToken()
 
   const engine = findEngine(manufacturer, model, version)
   const versionList = manufacturer && model ? versions(manufacturer, model) : []
@@ -69,13 +71,13 @@ export default function Gearing() {
         <PageHeader>Calculate RPM &amp; {labels.speed}</PageHeader>
         <UnitToggle />
         <GearingSteps current={1} />
-        <ResultStat label="Crankshaft To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
+        <Tachometer rpm={calcRpm(internal, external, mph, circumference)} />
         <Row>
           <Col span={12}>
-            <ResultStat label="RPM" value={calcRpm(internal, external, mph, circumference)} />
+            <ResultStat label={labels.speed} value={speed} />
           </Col>
           <Col span={12}>
-            <ResultStat label={labels.speed} value={speed} />
+            <ResultStat label="Crank To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
           </Col>
         </Row>
         <Slider
@@ -84,7 +86,7 @@ export default function Gearing() {
           value={speed}
           onChange={(v) => setMph(speedToMph(v, units))}
           aria-label={labels.speed}
-          style={{ margin: '2rem 0 3rem' }}
+          style={{ margin: `${token.margin}px 0 ${token.marginXL}px` }}
         />
         <BackButton onClick={() => setStep(0)} />
       </section>
@@ -200,6 +202,7 @@ export default function Gearing() {
 }
 
 function GearingSteps({ current }: { current: number }) {
+  const { token } = theme.useToken()
   return (
     <Steps
       size="small"
@@ -207,7 +210,7 @@ function GearingSteps({ current }: { current: number }) {
       responsive={false}
       current={current}
       items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]}
-      style={{ marginBottom: '1.5rem' }}
+      style={{ marginBottom: token.marginLG }}
     />
   )
 }

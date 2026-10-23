@@ -73,8 +73,9 @@ describe('Gearing', () => {
     await user.click(screen.getByRole('button', { name: 'Next' }))
 
     expect(screen.getByRole('heading', { name: 'Calculate RPM & MPH' })).toBeInTheDocument()
-    expect(resultValue('Crankshaft To Wheel Ratio')).toBe('14.20:1')
+    expect(resultValue('Crank To Wheel Ratio')).toBe('14.20:1')
     expect(resultValue('RPM')).toBe('6662')
+    expect(screen.getByRole('img', { name: 'Engine speed 6662 RPM' })).toBeInTheDocument()
     expect(resultValue('MPH')).toBe('30')
   })
 

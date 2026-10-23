@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Light and dark themes. The app follows the device setting by default, a Light · Auto · Dark switch in the header overrides it, and the choice is remembered. The page never flashes the wrong theme while loading.
+- Tachometer-style RPM gauge with a redline zone on the gearing results.
+- Home page tool cards with icons and short descriptions, and the gear logo beside the site title.
+- The styleguide previews both themes side by side with contrast ratios, plus the resolved type, spacing and radius scales.
+
+### Changed
+
+- All styling now comes from antd design tokens and antd's CSS-in-JS. The hand-written stylesheet and CSS variables are gone.
+- Dark-mode headings use a lighter red (`#EA3D6C`) so they meet WCAG contrast. The old red measured 2.61:1.
+- Gearing results lead with the RPM gauge, and the ratio sits beside the speed as "Crank To Wheel Ratio".
+
 ## [2.0.0] - 2026-10-23
 
 ### Added

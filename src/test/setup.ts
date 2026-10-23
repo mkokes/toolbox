@@ -1,27 +1,17 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
 import { afterEach } from 'vitest'
+import { installMatchMedia, resetMatchMedia } from './matchMedia'
 
 afterEach(() => {
   cleanup()
   localStorage.clear()
+  resetMatchMedia()
+  delete document.documentElement.dataset.theme
 })
 
 // jsdom gaps that antd relies on.
-const noop = () => {}
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: (query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: noop,
-    removeListener: noop,
-    addEventListener: noop,
-    removeEventListener: noop,
-    dispatchEvent: () => false,
-  }),
-})
+installMatchMedia()
 
 // antd measures scrollbars with getComputedStyle(el, '::-webkit-scrollbar'); jsdom doesn't support pseudo-elements.
 const { getComputedStyle } = window

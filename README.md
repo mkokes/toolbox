@@ -27,8 +27,10 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
   - See the crankshaft-to-wheel ratio and the engine RPM at any speed from a slider.
 - **Gas mixing calculator:** pick a fuel-to-oil ratio (20:1 to 100:1) and an amount of gas to get the oil to add, in ml (plus fl oz in imperial).
 - **Imperial / metric toggle:** switches mph ↔ km/h, gallons ↔ litres and inches ↔ mm. The choice is remembered between visits.
+- **Light and dark themes:** follows your device's setting automatically. A Light · Auto · Dark switch in the header overrides it, and your choice is remembered. Both themes meet WCAG AA contrast.
+- **RPM gauge:** the gearing results show engine speed on a tachometer dial with a redline zone.
 - **Installable and offline:** it's a Progressive Web App. You can add it to your home screen or desktop, and it keeps working with no signal once it has loaded.
-- **Styleguide page:** a living reference for the theme's colors, type, spacing and components.
+- **Styleguide page:** a living reference for both themes' colors (with contrast ratios), type, spacing and components.
 
 ## Tech stack
 
@@ -37,6 +39,7 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
 | UI            | React 18, Ant Design 5, React Router 6 (hash routing) |
 | Language      | TypeScript 5.6                                        |
 | Build         | Vite 6                                                |
+| Styling       | antd design tokens + antd CSS-in-JS (no CSS files)    |
 | Tests         | Vitest, React Testing Library, jsdom                  |
 | Lint / format | oxlint, oxfmt, husky (pre-push hook)                  |
 | PWA           | vite-plugin-pwa (Workbox service worker)              |
@@ -99,7 +102,7 @@ src/
   context/            the shared imperial/metric setting
   components/         small shared UI pieces (results, headings, unit toggle)
   pages/              one page per tool, plus the styleguide
-  theme/              brand tokens, antd theme and global CSS
+  theme/              design tokens (every style value), antd theme config, app styles
   test/               test setup and shared test helpers
 src/pwa.ts            web app manifest (name, colors, icons)
 public/               icon.svg (logo source) and the icons generated from it, copied as-is into the build
@@ -126,7 +129,9 @@ Add a record to `src/data/engines.json`. Records with the same `manufacturer` an
 
 ## Styleguide
 
-The styleguide lives at **https://mkokes.github.io/toolbox/#/styleguide**, or `http://localhost:5173/#/styleguide` when running `npm run dev`. The app doesn't link to it, so use the URL. It renders the theme straight from `src/theme/tokens.ts` and `src/theme/antdTheme.ts`. To change the look, edit the tokens rather than individual components.
+The styleguide lives at **https://mkokes.github.io/toolbox/#/styleguide**, or `http://localhost:5173/#/styleguide` when running `npm run dev`. The app doesn't link to it, so use the URL. It previews the light and dark palettes side by side with contrast ratios, and shows the resolved type, spacing and radius tokens, all straight from `src/theme/tokens.ts`.
+
+All styling is antd design tokens: colors, fonts, sizes, spacing and borders are defined once in `tokens.ts` and read by components through `theme.useToken()`. To change the look, edit the tokens, not individual components.
 
 ## Deployment
 
