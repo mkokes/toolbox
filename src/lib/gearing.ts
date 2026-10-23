@@ -8,8 +8,12 @@ export const tireCircumference = (wheel: number, tireWidth: number) => (tireWidt
 export const calcRpm = (internalRatio: number, externalRatio: number, mph: number, circumference: number) =>
   Math.round(((mph / 60) * INCHES_PER_MILE) / circumference / externalRatio / internalRatio)
 
+/** Road speed in mph at a given engine RPM, unrounded (convert units before rounding). */
+export const speedAtRpm = (internalRatio: number, externalRatio: number, rpm: number, circumference: number) =>
+  ((rpm * internalRatio * externalRatio * circumference) / INCHES_PER_MILE) * 60
+
 export const calcMph = (internalRatio: number, externalRatio: number, rpm: number, circumference: number) =>
-  Math.round(((rpm * internalRatio * externalRatio * circumference) / INCHES_PER_MILE) * 60)
+  Math.round(speedAtRpm(internalRatio, externalRatio, rpm, circumference))
 
 /** Crankshaft-to-wheel ratio, e.g. 14.2 for 14.20:1 */
 export const finalRatio = (internalRatio: number, externalRatio: number) => (1 / internalRatio) * (1 / externalRatio)

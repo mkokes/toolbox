@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Light and dark themes. The app follows the device setting by default, a Light · Auto · Dark switch in the header overrides it, and the choice is remembered. The page never flashes the wrong theme while loading.
 - Tachometer-style RPM gauge with a redline zone on the gearing results.
 - Home page tool cards with icons and short descriptions, and the gear logo beside the site title.
+- **Top speed at a target RPM** on the gearing results (default 8,000 RPM, saved in the link).
+- **Compare gearing:** a what-if card that sets the current sprockets against an alternative, with ±1 buttons, showing the ratio, RPM at the current speed and top speed at the target RPM, plus the change. **Use this gearing** applies it.
 - Gearing setups live in the page link, so they can be bookmarked and shared. **Share** (on the results page) uses the phone's share sheet or copies the link, and the link opens straight to the results.
 - **My bikes:** save a setup with a name, then reopen or delete it from the gearing page. It's stored on the device.
 - **Other / custom** engine: type the engine's reduction ratio for bikes not in the presets.

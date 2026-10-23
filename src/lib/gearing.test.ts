@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { findEngine } from '../data/engines'
-import { calcMph, calcRpm, finalRatio, tireCircumference } from './gearing'
+import { calcMph, calcRpm, finalRatio, speedAtRpm, tireCircumference } from './gearing'
 
 // The original toolbox's pi approximation; the port must keep it.
 // oxlint-disable-next-line oxc/approx-constant
@@ -65,6 +65,17 @@ describe('calcMph', () => {
     for (const mph of [10, 25, 30, 45]) {
       const rpm = calcRpm(e50.finaldriveratio, external, mph, circumference)
       expect(calcMph(e50.finaldriveratio, external, rpm, circumference)).toBe(mph)
+    }
+  })
+})
+
+describe('speedAtRpm', () => {
+  it('is the unrounded speed calcMph rounds', () => {
+    expect(speedAtRpm(e50.finaldriveratio, external, 8000, circumference)).toBeCloseTo(36.03, 2)
+    for (const rpm of [3000, 6662, 8000, 11000]) {
+      expect(Math.round(speedAtRpm(e50.finaldriveratio, external, rpm, circumference))).toBe(
+        calcMph(e50.finaldriveratio, external, rpm, circumference),
+      )
     }
   })
 })

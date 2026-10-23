@@ -48,7 +48,8 @@ src/
   App.tsx               layout shell (calls useAppStyles; header with ThemeToggle + logo); exports `routes` (/, /gearing, /mix, /styleguide [lazy]) and the hash `router`
   data/engines.json     engine presets; data/engines.ts = Engine type + lookups (manufacturers/models/versions/findEngine)
   lib/                  pure, framework-free logic
-    gearing.ts          tireCircumference, calcRpm, calcMph, finalRatio
+    gearing.ts          tireCircumference, calcRpm, calcMph, speedAtRpm (unrounded), finalRatio
+    compare.ts          compareGearing (current vs what-if), shiftOption
     mix.ts              oilMl(litres, ratio), mlToFlOz
     units.ts            UnitSystem, conversion constants and helpers, unitLabels
     options.ts          dropdown option generators (wheel, tire, ratio, sprockets/pulleys)
@@ -59,7 +60,7 @@ src/
   context/UnitsContext.tsx   useUnits(): shared imperial/metric choice, persisted to localStorage ("toolbox.units")
   context/ThemeContext.tsx   useTheme() (light/dark/system, "toolbox.theme"), useBrandToken(), ThemedConfig
   hooks/useSavedBikes.ts    React state over lib/savedBikes
-  components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer
+  components/           PageHeader, ResultStat, BackButton, UnitToggle, ThemeToggle, Tachometer, CompareGearing
   pages/                Home, Gearing, MixGas, Styleguide
   theme/                tokens.ts (every style value) → antdTheme.ts (getAntdTheme) + useAppStyles.ts (CSS-in-JS)
   test/                 setup.ts (jsdom shims), matchMedia.ts (setSystemDark), render.tsx (renderRoute), antd.ts (choose)
@@ -87,6 +88,8 @@ src/
   - `Gearing.tsx` reads it with `useSearchParams()` and `parseSetup()`, and writes it with `toSearchParams()`. Form edits use `{ replace: true }`, and only Next pushes a history entry.
   - `parseSetup` validates every value against `engines.json` and the dropdown options, and silently drops anything invalid, so an old or mangled link degrades to a partly filled form instead of an error. Keep it that way when adding fields, and add the key to `toSearchParams` too.
   - A custom engine is `make=custom&reduction=5.05`. Always get the ratio through `engineRatio(setup)` (1 / reduction for custom engines), never from `findEngine` directly.
+  - The results page's target RPM is the optional `rpm` param (`parseTargetRpm`, default 8000, whole numbers 1000–15000). It's only written when it isn't the default.
+  - Number inputs fed from the URL (`reduction`, `rpm`) are **uncontrolled** (`defaultValue`) and only commit valid values. Otherwise validation would wipe partial input such as "9" on the way to "9500".
   - Transient UI state (the speed slider, the "editing drivetrain" toggle) stays in component state so it doesn't flood the history.
 - **Use antd components** (`Form`, `Select`, `InputNumber`, `Slider`, `Segmented`, `Button`) before writing custom controls. Primary buttons are `type="primary" size="large" block`.
 - **Formatting is owned by oxfmt** (`.oxfmtrc.json`: no semicolons, single quotes, 120 cols, trailing commas). Don't hand-format against it. Run `npm run format`.
@@ -94,6 +97,7 @@ src/
 
 ## Gotchas
 
+- **Round speeds after converting units.** Use `speedAtRpm` (unrounded) and round in the display unit. `calcMph` rounds in mph, which would make km/h off by one.
 - **Keep the legacy math constants.**
   - `tireCircumference` uses `3.14159` rather than `Math.PI`.
   - `LITRES_PER_GALLON` is `3.78541`.

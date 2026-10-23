@@ -3,6 +3,7 @@ import { DeleteOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icon
 import {
   Button,
   Card,
+  Collapse,
   Col,
   Flex,
   Form,
@@ -23,6 +24,7 @@ import {
 import { useLocation, useSearchParams } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
+import CompareGearing from '../components/CompareGearing'
 import ResultStat from '../components/ResultStat'
 import Tachometer from '../components/Tachometer'
 import UnitToggle from '../components/UnitToggle'
@@ -30,11 +32,14 @@ import { manufacturers, models, versions } from '../data/engines'
 import { useUnits } from '../context/UnitsContext'
 import { useSavedBikes } from '../hooks/useSavedBikes'
 import { sprocketOptions, tireWidths, wheelSizes } from '../lib/options'
-import { calcRpm, finalRatio, tireCircumference } from '../lib/gearing'
+import { calcRpm, finalRatio, speedAtRpm, tireCircumference } from '../lib/gearing'
 import {
   CUSTOM,
   REDUCTION_MAX,
   REDUCTION_MIN,
+  TARGET_RPM_DEFAULT,
+  TARGET_RPM_MAX,
+  TARGET_RPM_MIN,
   describeDrivetrain,
   drivetrainOf,
   engineFor,
@@ -42,6 +47,7 @@ import {
   isComplete,
   isStock,
   parseSetup,
+  parseTargetRpm,
   setupName,
   withStockDrivetrain,
   toSearchParams,
@@ -57,17 +63,29 @@ const toOptions = (list: string[]) => list.map((v) => ({ value: v, label: v }))
 // 100 mph, and the equivalent round figure in km/h
 const MAX_SPEED: Record<UnitSystem, number> = { imperial: 100, metric: 160 }
 
+/** URL params for the results view; the target RPM is only included when it isn't the default. */
+const resultsParams = (s: GearingSetup, rpm: number) =>
+  toSearchParams(s, { view: 'results', ...(rpm !== TARGET_RPM_DEFAULT && { rpm: String(rpm) }) })
+
 /** The gearing tool. Its whole setup lives in the URL (`?make=Puch&model=E50&front=16…&view=results`). */
 export default function Gearing() {
   const [params, setParams] = useSearchParams()
   const setup = parseSetup(params)
+  const targetRpm = parseTargetRpm(params)
   const showResults = params.get('view') === 'results' && isComplete(setup)
 
   /** Replace the setup in the URL (no new history entry while filling in the form). */
   const update = (next: GearingSetup) => setParams(toSearchParams(next), { replace: true })
+  const updateResults = (next: GearingSetup, rpm: number) => setParams(resultsParams(next, rpm), { replace: true })
 
   return showResults ? (
-    <Results setup={setup} onBack={() => update(setup)} />
+    <Results
+      setup={setup}
+      targetRpm={targetRpm}
+      onTargetRpm={(rpm) => updateResults(setup, rpm)}
+      onUseGearing={(front, rear) => updateResults({ ...setup, front, rear }, targetRpm)}
+      onBack={() => update(setup)}
+    />
   ) : (
     <SetupForm
       setup={setup}
@@ -305,7 +323,19 @@ function MyBikes({ onOpen }: { onOpen: (params: string) => void }) {
   )
 }
 
-function Results({ setup, onBack }: { setup: GearingSetup; onBack: () => void }) {
+function Results({
+  setup,
+  targetRpm,
+  onTargetRpm,
+  onUseGearing,
+  onBack,
+}: {
+  setup: GearingSetup
+  targetRpm: number
+  onTargetRpm: (rpm: number) => void
+  onUseGearing: (front: number, rear: number) => void
+  onBack: () => void
+}) {
   // Speed is held in mph (unrounded) so switching units never drifts the RPM.
   const [mph, setMph] = useState(30)
   const { units } = useUnits()
@@ -325,7 +355,7 @@ function Results({ setup, onBack }: { setup: GearingSetup; onBack: () => void })
   const query = toSearchParams(setup).toString()
 
   const share = async () => {
-    const url = `${window.location.origin}${window.location.pathname}#${location.pathname}?${toSearchParams(setup, { view: 'results' })}`
+    const url = `${window.location.origin}${window.location.pathname}#${location.pathname}?${resultsParams(setup, targetRpm)}`
     try {
       if (navigator.share) {
         await navigator.share({ title: `Moped Toolbox: ${setupName(setup)}`, url })
@@ -364,6 +394,50 @@ function Results({ setup, onBack }: { setup: GearingSetup; onBack: () => void })
         onChange={(v) => setMph(speedToMph(v, units))}
         aria-label={labels.speed}
         style={{ margin: `${token.margin}px 0 ${token.marginXL}px` }}
+      />
+      <Form layout="vertical">
+        <Form.Item htmlFor="target-rpm" label="Top speed at a target RPM" extra="e.g. where your pipe makes peak power">
+          <InputNumber
+            id="target-rpm"
+            size="large"
+            style={{ width: '100%' }}
+            min={TARGET_RPM_MIN}
+            max={TARGET_RPM_MAX}
+            step={250}
+            inputMode="numeric"
+            addonAfter="RPM"
+            // Uncontrolled so partial input (e.g. "9" on the way to "9500") isn't reset by URL validation.
+            defaultValue={targetRpm}
+            onChange={(v) => {
+              if (v !== null && Number.isInteger(v) && v >= TARGET_RPM_MIN && v <= TARGET_RPM_MAX) onTargetRpm(v)
+            }}
+          />
+        </Form.Item>
+      </Form>
+      <output className="tb-callout" htmlFor="target-rpm">
+        ≈ {Math.round(speedFromMph(speedAtRpm(internal, external, targetRpm, circumference), units))}{' '}
+        {labels.speedShort} at {targetRpm.toLocaleString('en-US')} RPM
+      </output>
+      <Collapse
+        style={{ marginBottom: token.margin }}
+        items={[
+          {
+            key: 'compare',
+            label: 'Compare gearing (what if…)',
+            children: (
+              <CompareGearing
+                key={`${d.front}/${d.rear}`}
+                make={setup.make ?? ''}
+                internalRatio={internal}
+                base={d}
+                mph={mph}
+                targetRpm={targetRpm}
+                units={units}
+                onUse={onUseGearing}
+              />
+            ),
+          },
+        ]}
       />
       <Modal
         title="Save to My bikes"

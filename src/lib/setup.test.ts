@@ -7,6 +7,8 @@ import {
   isComplete,
   isStock,
   parseSetup,
+  parseTargetRpm,
+  TARGET_RPM_DEFAULT,
   setupName,
   stockDrivetrain,
   toSearchParams,
@@ -101,5 +103,18 @@ describe('describeDrivetrain / setupName', () => {
   it('names a setup for saving', () => {
     expect(setupName(E50)).toBe('Puch E50 16/45')
     expect(setupName({ make: CUSTOM, reduction: 5.05, front: 14, rear: 50 })).toBe('Custom 5.05:1 14/50')
+  })
+})
+
+describe('parseTargetRpm', () => {
+  it('defaults to 8000', () => {
+    expect(parseTargetRpm(new URLSearchParams(''))).toBe(TARGET_RPM_DEFAULT)
+  })
+
+  it('accepts whole RPMs in range and ignores the rest', () => {
+    expect(parseTargetRpm(new URLSearchParams('rpm=9500'))).toBe(9500)
+    for (const bad of ['rpm=500', 'rpm=20000', 'rpm=8000.5', 'rpm=fast']) {
+      expect(parseTargetRpm(new URLSearchParams(bad))).toBe(TARGET_RPM_DEFAULT)
+    }
   })
 })

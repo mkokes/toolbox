@@ -25,6 +25,8 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
   - Choose a manufacturer, model and version from presets for Garelli, Laura, Minarelli, Motobecane, Peugeot, Puch, Sachs, Tomos and Vespa.
   - Adjust the front/rear sprockets (belt pulleys on a Vespa), wheel size and tire width.
   - See the crankshaft-to-wheel ratio and the engine RPM at any speed from a slider.
+- **Top speed at a target RPM:** type the RPM your engine makes peak power at, and see the road speed it gives with your gearing.
+- **Compare gearing:** try a what-if sprocket combination, with quick ±1 tooth buttons, and see the ratio, RPM and top speed side by side with the change. **Use this gearing** applies it.
 - **Shareable and saved setups:** the bike setup lives in the page link, so you can bookmark it or share it, and the link opens straight to the results. **My bikes** saves setups on your device so you can reopen them in one tap.
 - **Custom engines:** choose **Other / custom** and type the engine's reduction (crank to output sprocket, e.g. 5.05 : 1) for bikes not in the list.
 - **Gas mixing calculator:** pick a fuel-to-oil ratio (20:1 to 100:1) and an amount of gas to get the oil to add, in ml (plus fl oz in imperial).
