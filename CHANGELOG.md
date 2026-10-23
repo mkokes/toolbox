@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-10-23
+
 ### Added
 
 - Imperial / metric unit toggle on the gearing and gas mixing calculators.
@@ -29,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Calculations give the same results as before.
 - Pages now have their own URLs (`/#/gearing`, `/#/mix`), so they can be bookmarked and linked.
 - Node.js 22.22, 24.15 or 26+ is now required (`.nvmrc` pins Node 26).
-
 - Redrew the gear-and-"M" logo as a scalable SVG. All icons (favicon, PWA, maskable, Apple touch) are now generated from it, replacing the old low-resolution PNGs.
 
 ### Fixed
@@ -42,3 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Footer links ("Back to Marty's Garage" and the styleguide link).
 - Carburetor sizing calculator.
 - The unfinished, hidden port duration calculator.
+
+[Unreleased]: https://github.com/mkokes/toolbox/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/mkokes/toolbox/releases/tag/v2.0.0
