@@ -34,10 +34,10 @@ export function useAppStyles() {
     '.tb-title': {
       fontFamily: brand.fontFamilyDisplay,
       color: brand.colorAccent,
-      textAlign: 'center',
-      fontSize: token.fontSizeHeading2,
       fontWeight: 400,
-      margin: `${token.marginXS}px 0 ${token.marginXXS}px`,
+      margin: 0,
+      textAlign: 'left',
+      fontSize: token.fontSizeHeading3,
       a: { color: 'inherit', textDecoration: 'none' },
       'a:hover': { color: 'inherit' },
     },
@@ -54,17 +54,87 @@ export function useAppStyles() {
       '&:active': { background: g.active, boxShadow: `inset 0 0 6px 3px ${g.activeShadow}` },
     },
 
+    // Fields: small uppercase labels over rounded tiles that use the tile surface.
+    '.ant-form-item .ant-form-item-label > label': {
+      textTransform: 'uppercase',
+      letterSpacing: token.fontSizeSM * 0.06,
+    },
+    '.ant-select-filled:not(.ant-select-disabled) .ant-select-selector, .ant-input-number-filled, .ant-input-filled, .ant-input-number-group-addon':
+      { background: token.colorBgContainer },
+
+    // antd's keyboard focus ring on the switches is a dim shade of the primary on dark; use the heading red.
+    '.ant-segmented.ant-segmented:focus-visible, .ant-segmented.ant-segmented .ant-segmented-item-focused': {
+      outlineColor: brand.colorHeading,
+    },
+
+    // A focused tile gets a ring in the heading red: antd's 1px filled-variant border is too faint on dark.
+    '.ant-select-filled.ant-select-focused:not(.ant-select-disabled) .ant-select-selector, .ant-input-number-filled.ant-input-number-focused, .ant-input-filled:focus, .ant-input-filled.ant-input-affix-wrapper-focused':
+      { boxShadow: `0 0 0 ${token.lineWidth * 2}px ${brand.colorHeading}` },
+
+    // Progress through a multi-step flow: slim bars, filled up to the current step.
+    '.tb-steps': {
+      display: 'flex',
+      gap: token.marginXS,
+      listStyle: 'none',
+      margin: `0 0 ${token.marginLG}px`,
+      padding: 0,
+    },
+    '.tb-step': {
+      flex: 1,
+      height: token.sizeXS,
+      borderRadius: token.sizeXS,
+      background: brand.gaugeTrack,
+      '&.tb-step--filled': { background: token.colorPrimary },
+    },
+    '.tb-visually-hidden': {
+      position: 'absolute',
+      width: 1,
+      height: 1,
+      overflow: 'hidden',
+      clip: 'rect(0 0 0 0)',
+      whiteSpace: 'nowrap',
+    },
+
     '.tb-stack': { display: 'flex', flexDirection: 'column', gap: token.margin },
 
-    // Back/Next row pinned to the bottom of the viewport on long forms.
+    // Back/Next bar pinned to the bottom of the viewport on long forms. It has its own raised surface and a soft
+    // shadow so it reads as a footer, runs edge to edge (cancelling the wrapper's side padding), and sits above
+    // every antd control but below popups. The negative bottom margin cancels the wrapper's bottom padding:
+    // a sticky box can't move past its parent's padding, which would leave a gap where content shows below it.
     '.tb-actions': {
       position: 'sticky',
       bottom: 0,
-      zIndex: 1,
+      zIndex: token.zIndexPopupBase - 1,
       marginTop: token.margin,
-      padding: `${token.paddingSM}px 0`,
-      background: token.colorBgLayout,
+      marginInline: -token.paddingXS,
+      marginBottom: -token.paddingXL,
+      padding: `${token.paddingSM}px ${token.paddingXS}px`,
+      background: token.colorBgElevated,
       borderTop: `${token.lineWidth}px ${token.lineType} ${token.colorBorderSecondary}`,
+      boxShadow: `0 -${token.sizeXXS}px ${token.sizeSM}px ${token.colorFillSecondary}`,
+    },
+
+    // The footer bar shown in place on the styleguide.
+    '.tb-actions.tb-actions--static': { position: 'static', margin: 0, borderRadius: token.borderRadiusLG },
+
+    // "More below" cue: a fade and chevron at the bottom of the screen (above the action bar, if any).
+    '.tb-scroll-hint': {
+      position: 'fixed',
+      insetInline: 0,
+      marginInline: 'auto',
+      maxWidth: brand.contentMaxWidth + token.paddingXS * 2,
+      zIndex: token.zIndexPopupBase - 2,
+      display: 'flex',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+      height: token.sizeXL,
+      paddingBottom: token.paddingXXS,
+      color: token.colorTextTertiary,
+      background: `linear-gradient(transparent, ${token.colorBgLayout})`,
+      opacity: 0,
+      pointerEvents: 'none',
+      transition: `opacity ${token.motionDurationMid}`,
+      '&.tb-scroll-hint--visible': { opacity: 1 },
     },
 
     // Home page tool cards: the whole card is the link; red edge on hover/focus.
@@ -73,7 +143,12 @@ export function useAppStyles() {
       borderRadius: token.borderRadiusLG,
       color: 'inherit',
       textDecoration: 'none',
-      '.ant-card-body': { minHeight: token.controlHeightLG },
+      '.ant-card': {
+        background: token.colorBgContainer,
+        borderColor: 'transparent',
+        borderRadius: token.borderRadiusLG,
+      },
+      '.ant-card-body': { minHeight: token.controlHeightLG, padding: token.paddingMD },
       '&:hover .ant-card, &:focus-visible .ant-card': { borderColor: token.colorPrimary },
       '&:focus-visible': {
         outline: `${token.lineWidthFocus}px solid ${token.colorPrimary}`,
@@ -81,9 +156,62 @@ export function useAppStyles() {
       },
     },
 
+    // Round accent icon on the home tool cards.
+    '.tb-tool-icon': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 'none',
+      width: token.controlHeightLG,
+      height: token.controlHeightLG,
+      borderRadius: '50%',
+      background: token.colorBgElevated,
+      color: brand.colorAccent,
+      fontSize: token.fontSizeHeading3,
+    },
+
     '.tb-result': { textAlign: 'center', color: brand.colorAccent, marginBottom: token.margin },
     '.tb-result-label': { fontSize: token.fontSizeXL },
     '.tb-result-value': { fontSize: token.fontSizeHeading2, fontVariantNumeric: 'tabular-nums' },
+
+    // Calculated results: a rounded tile with a big accent value over a small uppercase caption.
+    '.tb-stat-tile': {
+      flex: 1,
+      marginBottom: 0,
+      padding: `${token.paddingSM}px ${token.paddingXS}px`,
+      background: token.colorBgContainer,
+      borderRadius: token.borderRadiusLG,
+      '.tb-result-value': { fontWeight: 700 },
+      '.tb-result-label': {
+        color: token.colorTextSecondary,
+        fontSize: token.fontSizeSM,
+        letterSpacing: token.fontSizeSM * 0.06,
+        textTransform: 'uppercase',
+      },
+    },
+
+    // The gauge's big readout sits in the open bottom of the dial.
+    '.tb-gauge-readout': {
+      position: 'relative',
+      marginTop: -token.sizeXXL,
+      marginBottom: token.margin,
+      textAlign: 'center',
+      '.tb-gauge-value': {
+        color: brand.colorAccent,
+        fontSize: token.fontSizeHeading1 * 1.15,
+        fontWeight: 700,
+        lineHeight: 1.1,
+        fontVariantNumeric: 'tabular-nums',
+        // Five digits would run into the dial's 0 and 12 labels, so they are set smaller.
+        '&.tb-gauge-value--long': { fontSize: token.fontSizeHeading1 * 0.85 },
+      },
+      '.tb-gauge-caption': {
+        color: token.colorTextSecondary,
+        fontSize: token.fontSizeSM,
+        letterSpacing: token.fontSizeSM * 0.14,
+        textTransform: 'uppercase',
+      },
+    },
 
     '.tb-callout': {
       display: 'block',

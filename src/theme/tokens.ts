@@ -13,6 +13,7 @@ const red = '#CE1446'
 const redLight = '#EA3D6C' // the brand red lightened to stay readable on the dark background
 const charcoal = '#2B2A27'
 const offWhite = '#F7F6F2'
+const nearBlack = '#151513' // the dark "tuner" page background
 
 /** Tokens shared by both modes: type, shape, spacing and motion. */
 export const baseToken: Token = {
@@ -33,9 +34,13 @@ export const baseToken: Token = {
 /** Color tokens per mode. Contrast ratios are checked in tokens.test.ts. */
 export const palettes: Record<ThemeMode, Token> = {
   dark: {
-    colorBgBase: charcoal,
-    colorBgLayout: charcoal,
+    colorBgBase: nearBlack,
+    colorBgLayout: nearBlack,
+    // Tiles (fields, stats, cards) sit one step above the page; the footer and popups one more.
+    colorBgContainer: '#22211E',
+    colorBgElevated: '#2A2926',
     colorTextBase: '#EBEBEB',
+    colorTextSecondary: '#8D8B84',
     colorPrimary: red,
     colorLink: green,
     colorLinkHover: green,
@@ -45,11 +50,75 @@ export const palettes: Record<ThemeMode, Token> = {
     colorBgBase: '#FFFFFF',
     colorBgLayout: offWhite,
     colorBgContainer: '#FFFFFF',
+    colorBgElevated: '#FFFFFF',
     colorTextBase: charcoal,
+    colorTextSecondary: '#6B6961',
     colorPrimary: red,
     colorLink: greenDark,
     colorLinkHover: greenDark,
     colorSuccess: greenDark,
+  },
+}
+
+/** Slider: a thick rail and a big ring handle, easy to hit with a thumb. Green on dark, red on light. */
+type SliderToken = NonNullable<NonNullable<ThemeConfig['components']>['Slider']>
+
+const sliderShape: SliderToken = {
+  railSize: 10,
+  handleSize: 24,
+  handleSizeHover: 28,
+  handleLineWidth: 5,
+  handleLineWidthHover: 6,
+}
+
+export const sliderToken: Record<ThemeMode, SliderToken> = {
+  dark: {
+    ...sliderShape,
+    railBg: '#2C2B28',
+    railHoverBg: '#3A3935',
+    trackBg: green,
+    trackHoverBg: green,
+    handleColor: green,
+    handleActiveColor: green,
+  },
+  light: {
+    ...sliderShape,
+    railBg: '#DEDCD4',
+    railHoverBg: '#CFCDC4',
+    trackBg: red,
+    trackHoverBg: red,
+    handleColor: red,
+    handleActiveColor: red,
+  },
+}
+
+/** The Light / Auto / Dark and unit switches: a pill track with a raised selected item. */
+type SegmentedToken = NonNullable<NonNullable<ThemeConfig['components']>['Segmented']>
+
+const pill = 999 // larger than any control's height, so the ends are fully round
+
+export const segmentedToken: Record<ThemeMode, SegmentedToken> = {
+  dark: {
+    trackBg: '#22211E',
+    itemColor: '#8D8B84',
+    itemHoverColor: '#EBEBEB',
+    itemSelectedBg: '#3A3935',
+    itemSelectedColor: '#EBEBEB',
+    borderRadius: pill,
+    borderRadiusSM: pill,
+    borderRadiusLG: pill,
+    borderRadiusXS: pill,
+  },
+  light: {
+    trackBg: '#ECEAE3',
+    itemColor: '#6B6961',
+    itemHoverColor: charcoal,
+    itemSelectedBg: '#FFFFFF',
+    itemSelectedColor: charcoal,
+    borderRadius: pill,
+    borderRadiusSM: pill,
+    borderRadiusLG: pill,
+    borderRadiusXS: pill,
   },
 }
 
@@ -64,6 +133,10 @@ export interface BrandToken {
    * headers and more.
    */
   colorHeading: string
+  /** The dim ring behind the gauge's progress arc */
+  gaugeTrack: string
+  /** The gauge needle and hub */
+  needle: string
   /** The pill-button fill from the original bourbon `button(pill, $red)` mixin */
   buttonGradient: {
     start: string
@@ -99,18 +172,29 @@ const sharedBrand = {
 }
 
 export const brand: Record<ThemeMode, BrandToken> = {
-  dark: { ...sharedBrand, colorAccent: green, colorHeading: redLight },
-  light: { ...sharedBrand, colorAccent: greenDark, colorHeading: red },
+  dark: { ...sharedBrand, colorAccent: green, colorHeading: redLight, gaugeTrack: '#2C2B28', needle: '#EBEBEB' },
+  light: { ...sharedBrand, colorAccent: greenDark, colorHeading: red, gaugeTrack: '#E4E2DA', needle: charcoal },
 }
 
 /** What each color is for, shown on the styleguide. */
 export const colorRoles = [
-  { key: 'colorBgLayout', role: 'Page background' },
-  { key: 'colorTextBase', role: 'Body text' },
-  { key: 'colorAccent', role: 'Accent: site title, calculated results and links' },
-  { key: 'colorHeading', role: 'Page headings' },
-  { key: 'colorPrimary', role: 'Primary: buttons, sliders and focus (white text on top)' },
-] as const
+  { key: 'colorBgLayout', role: 'Page background', against: 'none' },
+  { key: 'colorBgContainer', role: 'Tiles: fields, stat tiles and cards', against: 'none' },
+  { key: 'colorBgElevated', role: 'Raised surfaces: the footer bar and popups', against: 'none' },
+  { key: 'colorTextBase', role: 'Body text', against: 'page' },
+  { key: 'colorTextSecondary', role: 'Muted text: labels, captions and hints', against: 'page' },
+  { key: 'colorAccent', role: 'Accent: site title, calculated results and links', against: 'page' },
+  { key: 'colorHeading', role: 'Page headings', against: 'page', large: true },
+  { key: 'colorPrimary', role: 'Primary: buttons, sliders and focus (white text on top)', against: 'white' },
+  { key: 'gaugeTrack', role: 'Gauge: the dim ring behind the filled arc', against: 'none' },
+  { key: 'needle', role: 'Gauge: needle and hub', against: 'page', large: true },
+] as const satisfies readonly {
+  key: string
+  role: string
+  /** What the color is checked against: the page background, white text on top of it, or nothing (a surface). */
+  against: 'page' | 'white' | 'none'
+  large?: boolean
+}[]
 
 /** A mode's page background, as a plain hex (used before React loads, and by the PWA manifest). */
 export const pageBackground = (mode: ThemeMode) => palettes[mode].colorBgLayout as string

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Form, InputNumber, Select } from 'antd'
+import ActionBar from '../components/ActionBar'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import UnitToggle from '../components/UnitToggle'
@@ -53,7 +54,9 @@ export default function MixGas() {
           />
         </Form.Item>
       </Form>
-      <BackButton />
+      <ActionBar>
+        <BackButton />
+      </ActionBar>
     </section>
   )
 }

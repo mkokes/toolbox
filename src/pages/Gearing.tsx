@@ -14,7 +14,6 @@ import {
   Row,
   Select,
   Slider,
-  Steps,
   Tag,
   Tooltip,
   Typography,
@@ -22,10 +21,12 @@ import {
   theme,
 } from 'antd'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import ActionBar from '../components/ActionBar'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import CompareGearing from '../components/CompareGearing'
 import ResultStat from '../components/ResultStat'
+import StepBars from '../components/StepBars'
 import Tachometer from '../components/Tachometer'
 import UnitToggle from '../components/UnitToggle'
 import { manufacturers, models, versions } from '../data/engines'
@@ -379,14 +380,10 @@ function Results({
         <Text type="secondary">{describeDrivetrain(setup, units)}</Text>
       </Flex>
       <Tachometer rpm={calcRpm(internal, external, mph, circumference)} />
-      <Row>
-        <Col span={12}>
-          <ResultStat label={labels.speed} value={speed} />
-        </Col>
-        <Col span={12}>
-          <ResultStat label="Crank To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
-        </Col>
-      </Row>
+      <Flex gap={token.marginXS}>
+        <ResultStat label={labels.speed} value={speed} />
+        <ResultStat label="Crank To Wheel Ratio" value={`${finalRatio(internal, external).toFixed(2)}:1`} />
+      </Flex>
       <Slider
         min={1}
         max={MAX_SPEED[units]}
@@ -473,21 +470,6 @@ function Results({
   )
 }
 
-/** Back/Next row that sticks to the bottom of the screen on phones. */
-function ActionBar({ children }: { children: React.ReactNode }) {
-  return <div className="tb-actions">{children}</div>
-}
-
 function GearingSteps({ current }: { current: number }) {
-  const { token } = theme.useToken()
-  return (
-    <Steps
-      size="small"
-      direction="horizontal"
-      responsive={false}
-      current={current}
-      items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]}
-      style={{ marginBottom: token.marginLG }}
-    />
-  )
+  return <StepBars current={current} steps={['Bike', 'RPM & Speed']} />
 }

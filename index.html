@@ -6,7 +6,7 @@
     <title>Moped Toolbox</title>
     <meta name="description" content="Moped Toolbox: gearing and fuel mixing calculators" />
     <meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#2B2A27" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#151513" media="(prefers-color-scheme: dark)" />
     <script>
       // Apply the saved/system theme before React loads, so the page never flashes the wrong background.
       // These two colors must match pageBackground() in src/theme/tokens.ts (checked by theme.test.ts).
@@ -18,7 +18,7 @@
         var dark = pref === 'dark' || (pref !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
         var root = document.documentElement
         root.dataset.theme = dark ? 'dark' : 'light'
-        root.style.backgroundColor = dark ? '#2B2A27' : '#F7F6F2'
+        root.style.backgroundColor = dark ? '#151513' : '#F7F6F2'
       })()
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

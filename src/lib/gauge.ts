@@ -22,3 +22,9 @@ export function arcPath(cx: number, cy: number, r: number, fromDeg: number, toDe
   const largeArc = toDeg - fromDeg > 180 ? 1 : 0
   return `M ${a.x.toFixed(2)} ${a.y.toFixed(2)} A ${r} ${r} 0 ${largeArc} 1 ${b.x.toFixed(2)} ${b.y.toFixed(2)}`
 }
+
+/** The filled part of the dial: from the start to the needle. `null` when there is no length to draw (rpm ≤ 0). */
+export function progressArcPath(cx: number, cy: number, r: number, rpm: number, max: number) {
+  if (rpm <= 0) return null
+  return arcPath(cx, cy, r, GAUGE_START, rpmToAngle(rpm, max))
+}

@@ -3,7 +3,6 @@ import { Card, Flex, Typography, theme } from 'antd'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
-import { useBrandToken } from '../context/ThemeContext'
 
 const tools: { title: string; description: string; to: string; icon: ReactNode }[] = [
   {
@@ -22,7 +21,6 @@ const tools: { title: string; description: string; to: string; icon: ReactNode }
 
 export default function Home() {
   const { token } = theme.useToken()
-  const brand = useBrandToken()
   return (
     <section>
       <PageHeader>Choose your task brave adventurer!</PageHeader>
@@ -31,7 +29,7 @@ export default function Home() {
           <Link key={t.to} to={t.to} className="tb-tool-card">
             <Card hoverable size="small">
               <Flex align="center" gap={token.margin}>
-                <span aria-hidden style={{ fontSize: token.fontSizeHeading3, color: brand.colorAccent }}>
+                <span aria-hidden className="tb-tool-icon">
                   {t.icon}
                 </span>
                 <Flex vertical flex={1}>
