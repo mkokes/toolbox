@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
+import { setSystemDark } from '../test/matchMedia'
 import { renderRoute } from '../test/render'
+import { brand } from './tokens'
 
 describe('form controls', () => {
   it('render as filled tiles rather than boxed web inputs', () => {
@@ -13,4 +15,22 @@ describe('form controls', () => {
     expect(document.querySelector('.ant-input-number-filled')).not.toBeNull()
     expect(document.querySelector('.ant-input-number-outlined')).toBeNull()
   })
+
+  it.each(['light', 'dark'] as const)(
+    'rings a focused tile in the %s heading red, since the 1px border alone is too faint',
+    (mode) => {
+      setSystemDark(mode === 'dark')
+      renderRoute('/gearing')
+      const css = [...document.querySelectorAll('style')]
+        .map((el) => el.textContent ?? '')
+        .join('\n')
+        .toLowerCase()
+      const color = brand[mode].colorHeading.toLowerCase()
+      const hasRing = (selector: string) =>
+        css.split('}').some((rule) => rule.includes(selector) && rule.includes('box-shadow') && rule.includes(color))
+      for (const selector of ['.ant-select-focused', '.ant-input-number-focused', '.ant-input-filled:focus']) {
+        expect(hasRing(selector), selector).toBe(true)
+      }
+    },
+  )
 })

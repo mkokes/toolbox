@@ -67,6 +67,10 @@ export function useAppStyles() {
       outlineColor: brand.colorHeading,
     },
 
+    // A focused tile gets a ring in the heading red: antd's 1px filled-variant border is too faint on dark.
+    '.ant-select-filled.ant-select-focused:not(.ant-select-disabled) .ant-select-selector, .ant-input-number-filled.ant-input-number-focused, .ant-input-filled:focus, .ant-input-filled.ant-input-affix-wrapper-focused':
+      { boxShadow: `0 0 0 ${token.lineWidth * 2}px ${brand.colorHeading}` },
+
     // Progress through a multi-step flow: slim bars, filled up to the current step.
     '.tb-steps': {
       display: 'flex',
