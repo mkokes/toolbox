@@ -14,7 +14,7 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "preview": "vite preview",
-    "icons": "pwa-assets-generator",
+    "icons": "pwa-assets-generator && pwa-assets-generator --config pwa-assets.favicon.config.ts",
     "prepare": "husky"
   },
   "dependencies": {
