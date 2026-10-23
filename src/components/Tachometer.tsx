@@ -106,11 +106,11 @@ export default function Tachometer({ rpm, max = 12000, redline = 9000 }: Tachome
         />
         <circle cx={CX} cy={CY} r={7} fill={brand.needle} />
       </svg>
-      <figcaption className="tb-gauge-readout">
-        <div className="tb-gauge-value" aria-live="polite">
+      <figcaption className="tb-result tb-gauge-readout">
+        <div className="tb-result-value tb-gauge-value" aria-live="polite">
           {rpm}
         </div>
-        <div className="tb-gauge-caption">RPM</div>
+        <div className="tb-result-label tb-gauge-caption">RPM</div>
       </figcaption>
     </figure>
   )
