@@ -1,0 +1,109 @@
+/* Custom properties (--tb-*) are injected from tokens.ts in main.tsx. */
+
+html,
+body {
+  margin: 0;
+  background: var(--tb-bg);
+  color: var(--tb-type);
+  font-family: var(--tb-font-body);
+  font-size: 16px;
+  line-height: 1.5715;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: var(--tb-green);
+}
+
+.tb-wrapper {
+  margin: 0 auto;
+  max-width: var(--tb-max-width);
+  width: var(--tb-width);
+  padding-bottom: 2rem;
+}
+
+.tb-title {
+  font-family: var(--tb-font-display);
+  color: var(--tb-green);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.tb-title a,
+.tb-title a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+h2.tb-heading.ant-typography {
+  color: var(--tb-red);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Pill button with the original gradient fill */
+.ant-btn-primary:not(:disabled) {
+  background-image: linear-gradient(var(--tb-btn-start), var(--tb-btn-end));
+  border: 1px solid var(--tb-btn-border);
+  box-shadow: inset 0 1px 0 0 var(--tb-btn-highlight);
+  text-shadow: 0 -1px 1px #7a1b2d;
+}
+
+.ant-btn-primary:not(:disabled):hover,
+.ant-btn-primary.tb-hover {
+  background-image: linear-gradient(var(--tb-btn-hover-start), var(--tb-btn-hover-end));
+}
+
+.ant-btn-primary:not(:disabled):active {
+  background: var(--tb-btn-active);
+  box-shadow: inset 0 0 6px 3px #6b0915;
+}
+
+.tb-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tb-result {
+  text-align: center;
+  color: var(--tb-green);
+  margin-bottom: 1rem;
+}
+
+.tb-result-label {
+  font-size: 1.25rem;
+}
+
+.tb-result-value {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tb-callout {
+  color: var(--tb-green);
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.tb-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tb-footer .tb-subtle {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
