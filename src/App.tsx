@@ -13,22 +13,22 @@ function Layout() {
   return (
     <div className="tb-wrapper">
       <header>
-        <Flex justify="flex-end" style={{ paddingTop: token.paddingXS }}>
+        <Flex align="center" justify="space-between" gap={token.marginXS} style={{ paddingTop: token.paddingXS }}>
+          <h1 className="tb-title">
+            <Link to="/">
+              <Flex align="center" gap={token.marginXS}>
+                <img
+                  src={`${import.meta.env.BASE_URL}icon.svg`}
+                  alt=""
+                  width={token.controlHeight}
+                  height={token.controlHeight}
+                />
+                Moped Toolbox
+              </Flex>
+            </Link>
+          </h1>
           <ThemeToggle />
         </Flex>
-        <h1 className="tb-title">
-          <Link to="/">
-            <Flex align="center" justify="center" gap={token.marginXS}>
-              <img
-                src={`${import.meta.env.BASE_URL}icon.svg`}
-                alt=""
-                width={token.controlHeight}
-                height={token.controlHeight}
-              />
-              Moped Toolbox
-            </Flex>
-          </Link>
-        </h1>
       </header>
       <main>
         <Outlet />

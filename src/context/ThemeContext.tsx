@@ -79,5 +79,15 @@ export function useBrandToken(): BrandToken {
 /** antd's ConfigProvider with the theme for whichever mode is active. */
 export function ThemedConfig({ children }: { children: ReactNode }) {
   const { resolved } = useTheme()
-  return <ConfigProvider theme={getAntdTheme(resolved)}>{children}</ConfigProvider>
+  return (
+    // Filled variants make selects and inputs read as rounded tiles instead of boxed web fields.
+    <ConfigProvider
+      theme={getAntdTheme(resolved)}
+      select={{ variant: 'filled' }}
+      input={{ variant: 'filled' }}
+      inputNumber={{ variant: 'filled' }}
+    >
+      {children}
+    </ConfigProvider>
+  )
 }

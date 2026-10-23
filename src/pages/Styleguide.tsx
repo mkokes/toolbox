@@ -9,14 +9,15 @@ import {
   InputNumber,
   Select,
   Slider,
-  Steps,
   Table,
   Tag,
   Typography,
   theme,
 } from 'antd'
+import BackButton from '../components/BackButton'
 import PageHeader from '../components/PageHeader'
 import ResultStat from '../components/ResultStat'
+import StepBars from '../components/StepBars'
 import Tachometer from '../components/Tachometer'
 import ThemeToggle from '../components/ThemeToggle'
 import UnitToggle from '../components/UnitToggle'
@@ -31,7 +32,9 @@ const WHITE = baseToken.colorTextLightSolid as string
 
 /** The hex value behind a color role, for a mode. */
 const roleColor = (mode: ThemeMode, key: (typeof colorRoles)[number]['key']) =>
-  key === 'colorAccent' || key === 'colorHeading' ? brand[mode][key] : (palettes[mode][key] as string)
+  key === 'colorAccent' || key === 'colorHeading' || key === 'gaugeTrack' || key === 'needle'
+    ? brand[mode][key]
+    : (palettes[mode][key] as string)
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   const { token } = theme.useToken()
@@ -65,7 +68,8 @@ function PalettePreview({ mode }: { mode: ThemeMode }) {
         <Title level={4} style={{ marginTop: 0, textTransform: 'capitalize' }}>
           {mode}
         </Title>
-        {colorRoles.map(({ key, role }) => {
+        {colorRoles.map((row) => {
+          const { key, role, against } = row
           const hex = roleColor(mode, key)
           return (
             <Flex key={key} align="center" gap={t.marginSM} style={{ marginBottom: t.marginSM }}>
@@ -88,10 +92,8 @@ function PalettePreview({ mode }: { mode: ThemeMode }) {
                 <Text code copyable>
                   {hex}
                 </Text>
-                {key === 'colorPrimary' && <ContrastTag ratio={contrast(WHITE, hex)} />}
-                {key !== 'colorPrimary' && key !== 'colorBgLayout' && (
-                  <ContrastTag ratio={contrast(hex, bg)} large={key === 'colorHeading'} />
-                )}
+                {against === 'white' && <ContrastTag ratio={contrast(WHITE, hex)} />}
+                {against === 'page' && <ContrastTag ratio={contrast(hex, bg)} large={'large' in row && row.large} />}
               </Flex>
             </Flex>
           )
@@ -173,8 +175,13 @@ export default function Styleguide() {
           </li>
           <li>
             <Text style={{ color: brandToken.colorAccent }}>Green</Text> marks things you read: calculated results, the
-            site title and links.
+            gauge, the site title and links.
           </li>
+          <li>
+            Dark is the home look: a near-black page, with tiles and the footer one step lighter. Light keeps the same
+            layout on a warm off-white with white tiles.
+          </li>
+          <li>The gauge and its big number are the hero of the results screen; everything else supports them.</li>
           <li>Keep to a single column with full-width controls; the app is phone-first.</li>
           <li>Never hard-code a color, size or font outside src/theme/. Read it from the tokens.</li>
         </ul>
@@ -230,7 +237,7 @@ export default function Styleguide() {
         </Paragraph>
       </Section>
 
-      <Section title="Components">
+      <Section title="Buttons">
         <div className="tb-stack">
           <Button type="primary" size="large" block>
             Primary button
@@ -242,7 +249,13 @@ export default function Styleguide() {
             Disabled
           </Button>
         </div>
-        <Divider />
+      </Section>
+
+      <Section title="Controls">
+        <Paragraph type="secondary">
+          Selects and inputs are filled tiles with a small uppercase label above. Steps are slim bars, and the switches
+          are pills.
+        </Paragraph>
         <Form layout="vertical">
           <Form.Item label="Select">
             <Select
@@ -261,12 +274,33 @@ export default function Styleguide() {
             <Slider defaultValue={30} min={1} max={100} />
           </Form.Item>
         </Form>
-        <Steps size="small" responsive={false} current={0} items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]} />
-        <Divider />
+        <StepBars current={0} steps={['Bike', 'RPM & Speed']} />
         <UnitToggle />
-        <Divider />
+      </Section>
+
+      <Section title="Gauge">
+        <Paragraph type="secondary">
+          The hero of the results screen: the arc fills in the accent color up to the needle, the red zone starts at
+          9,000 RPM, and the speed is the big readout.
+        </Paragraph>
         <Tachometer rpm={6662} />
-        <ResultStat label="ResultStat" value="14.20:1" />
+      </Section>
+
+      <Section title="Stat tiles">
+        <Flex gap={token.marginXS}>
+          <ResultStat label="MPH" value={30} />
+          <ResultStat label="Crank To Wheel Ratio" value="14.20:1" />
+        </Flex>
+      </Section>
+
+      <Section title="Footer bar">
+        <Paragraph type="secondary">
+          The Back / Next bar sticks to the bottom of the screen on long pages, above every control and below popups. A
+          soft fade and arrow appear above it while there is more page to scroll. Shown here without sticking.
+        </Paragraph>
+        <div className="tb-actions tb-actions--static">
+          <BackButton onClick={() => {}} />
+        </div>
       </Section>
 
       <Section title="Theme tokens">
