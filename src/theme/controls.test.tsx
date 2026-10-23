@@ -28,9 +28,10 @@ describe('form controls', () => {
       const color = brand[mode].colorHeading.toLowerCase()
       const hasRing = (selector: string) =>
         css.split('}').some((rule) => rule.includes(selector) && rule.includes('box-shadow') && rule.includes(color))
-      for (const selector of ['.ant-select-focused', '.ant-input-number-focused', '.ant-input-filled:focus']) {
-        expect(hasRing(selector), selector).toBe(true)
-      }
+      const missing = ['.ant-select-focused', '.ant-input-number-focused', '.ant-input-filled:focus'].filter(
+        (selector) => !hasRing(selector),
+      )
+      expect(missing).toEqual([])
     },
   )
 })
