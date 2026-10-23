@@ -68,6 +68,17 @@ export function parseSetup(params: URLSearchParams): GearingSetup {
   return { ...setup, front, rear, wheel, tire }
 }
 
+/** Target RPM for the top-speed readout and comparison (the `rpm` URL param). */
+export const TARGET_RPM_DEFAULT = 8000
+export const TARGET_RPM_MIN = 1000
+export const TARGET_RPM_MAX = 15000
+
+export function parseTargetRpm(params: URLSearchParams) {
+  const raw = params.get('rpm')
+  const n = Number(raw)
+  return raw !== null && Number.isInteger(n) && n >= TARGET_RPM_MIN && n <= TARGET_RPM_MAX ? n : TARGET_RPM_DEFAULT
+}
+
 /** URL search params for a setup, plus optional page state (e.g. `view=results`). */
 export function toSearchParams(setup: GearingSetup, extra: Record<string, string> = {}) {
   const p = new URLSearchParams()

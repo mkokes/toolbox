@@ -25,6 +25,8 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
   - Choose a manufacturer, model and version from presets for Garelli, Laura, Minarelli, Motobecane, Peugeot, Puch, Sachs, Tomos and Vespa.
   - Adjust the front/rear sprockets (belt pulleys on a Vespa), wheel size and tire width.
   - See the crankshaft-to-wheel ratio and the engine RPM at any speed from a slider.
+- **Top speed at a target RPM:** type the RPM your engine makes peak power at, and see the road speed it gives with your gearing.
+- **Compare gearing:** try a what-if sprocket combination, with quick ±1 tooth buttons, and see the ratio, RPM and top speed side by side with the change. **Use this gearing** applies it.
 - **Shareable and saved setups:** the bike setup lives in the page link, so you can bookmark it or share it, and the link opens straight to the results. **My bikes** saves setups on your device so you can reopen them in one tap.
 - **Custom engines:** choose **Other / custom** and type the engine's reduction (crank to output sprocket, e.g. 5.05 : 1) for bikes not in the list.
 - **Gas mixing calculator:** pick a fuel-to-oil ratio (20:1 to 100:1) and an amount of gas to get the oil to add, in ml (plus fl oz in imperial).
@@ -84,7 +86,7 @@ Tests use [Vitest](https://vitest.dev/) with [React Testing Library](https://tes
   - Unit conversions are checked to round-trip without drift.
   - Every engine preset's defaults are checked to exist in the dropdowns.
 - **Pages** (`src/pages`): each tool is driven the way a user would. The tests pick a bike, read the RPM, flip to metric and enter an amount of gas.
-- **Helpers** (`src/test/`): `setup.ts` fills in browser APIs jsdom lacks, `render.tsx` mounts the real app at a route, and `antd.ts` picks options from antd dropdowns.
+- **Helpers** (`src/test/`): `setup.ts` fills in browser APIs jsdom lacks, `matchMedia.ts` simulates the device's light/dark setting, `render.tsx` mounts the real app at a route, and `antd.ts` picks options from antd dropdowns.
 
 ```sh
 npm test                               # whole suite
@@ -101,8 +103,9 @@ src/
   data/engines.json   engine presets (ratios, default sprockets, wheel and tire)
   data/engines.ts     typed lookups over the presets
   lib/                pure calculator functions, unit conversions and select options
-  context/            the shared imperial/metric setting
-  components/         small shared UI pieces (results, headings, unit toggle)
+  context/            shared settings: imperial/metric units and the light/dark theme
+  hooks/              React hooks (saved bikes)
+  components/         shared UI pieces (results, headings, toggles, RPM gauge, compare card)
   pages/              one page per tool, plus the styleguide
   theme/              design tokens (every style value), antd theme config, app styles
   test/               test setup and shared test helpers
