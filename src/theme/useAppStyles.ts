@@ -54,6 +54,38 @@ export function useAppStyles() {
       '&:active': { background: g.active, boxShadow: `inset 0 0 6px 3px ${g.activeShadow}` },
     },
 
+    // Fields: small uppercase labels over rounded tiles that use the tile surface.
+    '.ant-form-item .ant-form-item-label > label': {
+      textTransform: 'uppercase',
+      letterSpacing: token.fontSizeSM * 0.06,
+    },
+    '.ant-select-filled:not(.ant-select-disabled) .ant-select-selector, .ant-input-number-filled, .ant-input-filled, .ant-input-number-group-addon':
+      { background: token.colorBgContainer },
+
+    // Progress through a multi-step flow: slim bars, filled up to the current step.
+    '.tb-steps': {
+      display: 'flex',
+      gap: token.marginXS,
+      listStyle: 'none',
+      margin: `0 0 ${token.marginLG}px`,
+      padding: 0,
+    },
+    '.tb-step': {
+      flex: 1,
+      height: token.sizeXS,
+      borderRadius: token.sizeXS,
+      background: brand.gaugeTrack,
+      '&.tb-step--filled': { background: token.colorPrimary },
+    },
+    '.tb-visually-hidden': {
+      position: 'absolute',
+      width: 1,
+      height: 1,
+      overflow: 'hidden',
+      clip: 'rect(0 0 0 0)',
+      whiteSpace: 'nowrap',
+    },
+
     '.tb-stack': { display: 'flex', flexDirection: 'column', gap: token.margin },
 
     // Back/Next bar pinned to the bottom of the viewport on long forms. It has its own raised surface and a soft

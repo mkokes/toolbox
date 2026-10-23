@@ -12,6 +12,12 @@ export function getAntdTheme(mode: ThemeMode): ThemeConfig {
         primaryShadow: 'none',
       },
       Slider: sliderToken[mode],
+      Form: {
+        // Small muted labels above each tile; the uppercase styling is in useAppStyles.
+        labelColor: palettes[mode].colorTextSecondary as string,
+        labelFontSize: 12,
+        verticalLabelPadding: '0 0 4px',
+      },
     },
   }
 }

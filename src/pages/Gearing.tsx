@@ -14,7 +14,6 @@ import {
   Row,
   Select,
   Slider,
-  Steps,
   Tag,
   Tooltip,
   Typography,
@@ -27,6 +26,7 @@ import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'
 import CompareGearing from '../components/CompareGearing'
 import ResultStat from '../components/ResultStat'
+import StepBars from '../components/StepBars'
 import Tachometer from '../components/Tachometer'
 import UnitToggle from '../components/UnitToggle'
 import { manufacturers, models, versions } from '../data/engines'
@@ -471,15 +471,5 @@ function Results({
 }
 
 function GearingSteps({ current }: { current: number }) {
-  const { token } = theme.useToken()
-  return (
-    <Steps
-      size="small"
-      direction="horizontal"
-      responsive={false}
-      current={current}
-      items={[{ title: 'Bike' }, { title: 'RPM & Speed' }]}
-      style={{ marginBottom: token.marginLG }}
-    />
-  )
+  return <StepBars current={current} steps={['Bike', 'RPM & Speed']} />
 }
