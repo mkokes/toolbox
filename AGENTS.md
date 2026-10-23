@@ -122,6 +122,7 @@ src/
   - A stale service worker can serve old code while you debug a production build. Use a private window or unregister it in DevTools → Application. `npm run dev` doesn't register one.
 - **Icons are generated, not hand-made.**
   - Edit `public/icon.svg`, run `npm run icons` (config in `pwa-assets.config.ts`), and commit the PNG/ICO output.
+  - `public/favicon.svg` is a simplified copy of the logo for tab-size use (the browser's SVG icon link and `favicon.ico`, built by `pwa-assets.favicon.config.ts`). Keep it in step with `icon.svg` when the logo changes.
   - The "M" in the SVG is the Lobster glyph converted to a path. Don't replace it with `<text>`: the icon renderer has no Lobster font.
   - `tsconfig.node.json` lists `src/pwa.ts` and `src/theme/tokens.ts` because `vite.config.ts` imports them, and composite projects must list every file.
 - **Theme bootstrapping:** an inline script in `index.html` sets `data-theme` and the page background before React loads, so there's no flash. It hard-codes the two page backgrounds and the `toolbox.theme` key; `theme.test.ts` checks they match `tokens.ts` and `ThemeContext`. The PWA manifest colors are the dark ones (a manifest can't vary by theme), and `<meta name="theme-color">` follows the active theme.

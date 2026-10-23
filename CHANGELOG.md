@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- New logo: a chunkier gear with a green ring and a tachometer, so it reads as a moped tool rather than a generic settings icon. Favicon, home-screen and app icons are regenerated to match, with a simplified favicon (no needle, bigger M) so the tab icon stays readable.
+
 ## [2.1.0] - 2026-10-23
 
 ### Added

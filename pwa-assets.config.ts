@@ -6,6 +6,8 @@ export default defineConfig({
   headLinkOptions: { preset: '2023' },
   preset: {
     ...minimal2023Preset,
+    // favicon.ico comes from the simplified public/favicon.svg (see pwa-assets.favicon.config.ts).
+    transparent: { ...minimal2023Preset.transparent, favicons: [] },
     // Maskable and Apple icons can't be transparent; use the logo's white backdrop.
     maskable: { ...minimal2023Preset.maskable, resizeOptions: { background: '#FFFFFF' } },
     apple: { ...minimal2023Preset.apple, resizeOptions: { background: '#FFFFFF' } },

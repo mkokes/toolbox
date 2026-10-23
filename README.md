@@ -63,19 +63,19 @@ npm run dev         # http://localhost:5173
 
 ## Scripts
 
-| Command                | What it does                                    |
-| ---------------------- | ----------------------------------------------- |
-| `npm run dev`          | Start the Vite dev server                       |
-| `npm run build`        | Type-check, then build to `dist/`               |
-| `npm run preview`      | Serve the production build locally              |
-| `npm run typecheck`    | Run the TypeScript compiler only                |
-| `npm test`             | Run the test suite once                         |
-| `npm run test:watch`   | Re-run tests as files change                    |
-| `npm run icons`        | Regenerate the app icons from `public/icon.svg` |
-| `npm run lint`         | Run oxlint. Warnings count as failures          |
-| `npm run lint:fix`     | Apply oxlint's automatic fixes                  |
-| `npm run format`       | Format all files with oxfmt                     |
-| `npm run format:check` | Report unformatted files without changing them  |
+| Command                | What it does                                                             |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `npm run dev`          | Start the Vite dev server                                                |
+| `npm run build`        | Type-check, then build to `dist/`                                        |
+| `npm run preview`      | Serve the production build locally                                       |
+| `npm run typecheck`    | Run the TypeScript compiler only                                         |
+| `npm test`             | Run the test suite once                                                  |
+| `npm run test:watch`   | Re-run tests as files change                                             |
+| `npm run icons`        | Regenerate the app icons from `public/icon.svg` and `public/favicon.svg` |
+| `npm run lint`         | Run oxlint. Warnings count as failures                                   |
+| `npm run lint:fix`     | Apply oxlint's automatic fixes                                           |
+| `npm run format`       | Format all files with oxfmt                                              |
+| `npm run format:check` | Report unformatted files without changing them                           |
 
 ## Testing
 
@@ -110,7 +110,7 @@ src/
   theme/              design tokens (every style value), antd theme config, app styles
   test/               test setup and shared test helpers
 src/pwa.ts            web app manifest (name, colors, icons)
-public/               icon.svg (logo source) and the icons generated from it, copied as-is into the build
+public/               icon.svg (logo source), favicon.svg (simplified for tiny sizes) and the icons generated from it, copied as-is into the build
 ```
 
 ## Adding a bike
@@ -152,7 +152,7 @@ Open the site in a browser, then use **Install** (Chrome or Edge: the icon in th
 
 ### App icons
 
-`public/icon.svg` is the logo: a gear with the Lobster "M", drawn as plain vector paths so it renders without the font installed. `npm run icons` uses `pwa-assets.config.ts` to generate the favicon, the 64/192/512px PWA icons, a maskable icon and the Apple touch icon from it. Commit the regenerated files.
+`public/icon.svg` is the logo: a gear with the Lobster "M", drawn as plain vector paths so it renders without the font installed. `npm run icons` uses `pwa-assets.config.ts` to generate the favicon, the 64/192/512px PWA icons, a maskable icon and the Apple touch icon from it. `public/favicon.svg` is a simplified version (no tachometer, bigger M) so the tab icon stays readable at 16px; `pwa-assets.favicon.config.ts` builds `favicon.ico` from it. Commit the regenerated files.
 
 To try a production build under the same sub-path locally:
 

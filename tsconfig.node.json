@@ -9,5 +9,11 @@
     "strict": true,
     "types": ["node"]
   },
-  "include": ["vite.config.ts", "pwa-assets.config.ts", "src/pwa.ts", "src/theme/tokens.ts"]
+  "include": [
+    "vite.config.ts",
+    "pwa-assets.config.ts",
+    "pwa-assets.favicon.config.ts",
+    "src/pwa.ts",
+    "src/theme/tokens.ts"
+  ]
 }
