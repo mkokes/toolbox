@@ -144,7 +144,7 @@ All styling is antd design tokens: colors, fonts, sizes, spacing and borders are
 
 - The workflow passes the Pages base path to the build as `BASE_PATH`, so assets resolve under `/toolbox/`.
 - The app uses hash URLs (`/#/gearing`) because GitHub Pages has no single-page-app fallback.
-- **Offline caching:** the build generates a service worker that caches the whole app. After a deploy, returning visitors get the new version on their next visit. It downloads in the background and takes over without a prompt.
+- **Offline caching:** the build generates a service worker that caches the whole app. After a deploy, the new version downloads in the background. An app left open checks for one every hour and when it returns to the foreground, and switches over (reloading) once the user has been idle for an hour. Otherwise it takes over the next time the app is closed and reopened. There's no prompt.
 
 ### Installing the app
 

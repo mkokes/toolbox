@@ -12,8 +12,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // New deploys activate on the next visit; there's no in-progress state worth prompting about.
-      registerType: 'autoUpdate',
+      // A new version waits in the background. src/pwaUpdates.ts applies it after an hour of idle time, and
+      // it takes over anyway the next time the app is closed and reopened.
+      registerType: 'prompt',
+      injectRegister: false, // src/pwaUpdates.ts registers the worker
       includeAssets: ['favicon.ico', 'icon.svg', 'apple-touch-icon-180x180.png'],
       manifest,
       workbox: {
