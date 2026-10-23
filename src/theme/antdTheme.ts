@@ -1,5 +1,5 @@
 import { theme, type ThemeConfig } from 'antd'
-import { baseToken, palettes, sliderToken, type ThemeMode } from './tokens'
+import { baseToken, palettes, segmentedToken, sliderToken, type ThemeMode } from './tokens'
 
 /** The full antd theme for a mode: algorithm, global tokens and component tokens. */
 export function getAntdTheme(mode: ThemeMode): ThemeConfig {
@@ -12,6 +12,7 @@ export function getAntdTheme(mode: ThemeMode): ThemeConfig {
         primaryShadow: 'none',
       },
       Slider: sliderToken[mode],
+      Segmented: segmentedToken[mode],
       Form: {
         // Small muted labels above each tile; the uppercase styling is in useAppStyles.
         labelColor: palettes[mode].colorTextSecondary as string,

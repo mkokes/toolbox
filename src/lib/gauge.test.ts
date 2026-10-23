@@ -32,12 +32,13 @@ describe('arcPath', () => {
   })
 })
 
+const end = (cx: number, cy: number, r: number, deg: number) => {
+  const { x, y } = polar(cx, cy, r, deg)
+  return `${x.toFixed(2)} ${y.toFixed(2)}`
+}
+
 describe('progressArcPath', () => {
   const max = 12000
-  const end = (cx: number, cy: number, r: number, deg: number) => {
-    const { x, y } = polar(cx, cy, r, deg)
-    return `${x.toFixed(2)} ${y.toFixed(2)}`
-  }
 
   it('has no length at zero or below, so there is nothing to draw', () => {
     expect(progressArcPath(100, 100, 50, 0, max)).toBeNull()

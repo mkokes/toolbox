@@ -34,10 +34,10 @@ export function useAppStyles() {
     '.tb-title': {
       fontFamily: brand.fontFamilyDisplay,
       color: brand.colorAccent,
-      textAlign: 'center',
-      fontSize: token.fontSizeHeading2,
       fontWeight: 400,
-      margin: `${token.marginXS}px 0 ${token.marginXXS}px`,
+      margin: 0,
+      textAlign: 'left',
+      fontSize: token.fontSizeHeading3,
       a: { color: 'inherit', textDecoration: 'none' },
       'a:hover': { color: 'inherit' },
     },
@@ -131,12 +131,31 @@ export function useAppStyles() {
       borderRadius: token.borderRadiusLG,
       color: 'inherit',
       textDecoration: 'none',
-      '.ant-card-body': { minHeight: token.controlHeightLG },
+      '.ant-card': {
+        background: token.colorBgContainer,
+        borderColor: 'transparent',
+        borderRadius: token.borderRadiusLG,
+      },
+      '.ant-card-body': { minHeight: token.controlHeightLG, padding: token.paddingMD },
       '&:hover .ant-card, &:focus-visible .ant-card': { borderColor: token.colorPrimary },
       '&:focus-visible': {
         outline: `${token.lineWidthFocus}px solid ${token.colorPrimary}`,
         outlineOffset: token.lineWidthFocus,
       },
+    },
+
+    // Round accent icon on the home tool cards.
+    '.tb-tool-icon': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 'none',
+      width: token.controlHeightLG,
+      height: token.controlHeightLG,
+      borderRadius: '50%',
+      background: token.colorBgElevated,
+      color: brand.colorAccent,
+      fontSize: token.fontSizeHeading3,
     },
 
     '.tb-result': { textAlign: 'center', color: brand.colorAccent, marginBottom: token.margin },

@@ -92,6 +92,36 @@ export const sliderToken: Record<ThemeMode, SliderToken> = {
   },
 }
 
+/** The Light / Auto / Dark and unit switches: a pill track with a raised selected item. */
+type SegmentedToken = NonNullable<NonNullable<ThemeConfig['components']>['Segmented']>
+
+const pill = 999 // larger than any control's height, so the ends are fully round
+
+export const segmentedToken: Record<ThemeMode, SegmentedToken> = {
+  dark: {
+    trackBg: '#22211E',
+    itemColor: '#8D8B84',
+    itemHoverColor: '#EBEBEB',
+    itemSelectedBg: '#3A3935',
+    itemSelectedColor: '#EBEBEB',
+    borderRadius: pill,
+    borderRadiusSM: pill,
+    borderRadiusLG: pill,
+    borderRadiusXS: pill,
+  },
+  light: {
+    trackBg: '#ECEAE3',
+    itemColor: '#6B6961',
+    itemHoverColor: charcoal,
+    itemSelectedBg: '#FFFFFF',
+    itemSelectedColor: charcoal,
+    borderRadius: pill,
+    borderRadiusSM: pill,
+    borderRadiusLG: pill,
+    borderRadiusXS: pill,
+  },
+}
+
 /** Values antd has no token for. Read them with `useBrandToken()`. */
 export interface BrandToken {
   /** Lobster, used for the site title */
