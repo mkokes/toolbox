@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-23
+
 ### Added
 
 - Light and dark themes. The app follows the device setting by default, a Light · Auto · Dark switch in the header overrides it, and the choice is remembered. The page never flashes the wrong theme while loading.
@@ -64,5 +66,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Carburetor sizing calculator.
 - The unfinished, hidden port duration calculator.
 
-[Unreleased]: https://github.com/mkokes/toolbox/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/mkokes/toolbox/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/mkokes/toolbox/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/mkokes/toolbox/releases/tag/v2.0.0

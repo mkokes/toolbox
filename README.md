@@ -86,7 +86,7 @@ Tests use [Vitest](https://vitest.dev/) with [React Testing Library](https://tes
   - Unit conversions are checked to round-trip without drift.
   - Every engine preset's defaults are checked to exist in the dropdowns.
 - **Pages** (`src/pages`): each tool is driven the way a user would. The tests pick a bike, read the RPM, flip to metric and enter an amount of gas.
-- **Helpers** (`src/test/`): `setup.ts` fills in browser APIs jsdom lacks, `render.tsx` mounts the real app at a route, and `antd.ts` picks options from antd dropdowns.
+- **Helpers** (`src/test/`): `setup.ts` fills in browser APIs jsdom lacks, `matchMedia.ts` simulates the device's light/dark setting, `render.tsx` mounts the real app at a route, and `antd.ts` picks options from antd dropdowns.
 
 ```sh
 npm test                               # whole suite
@@ -103,8 +103,9 @@ src/
   data/engines.json   engine presets (ratios, default sprockets, wheel and tire)
   data/engines.ts     typed lookups over the presets
   lib/                pure calculator functions, unit conversions and select options
-  context/            the shared imperial/metric setting
-  components/         small shared UI pieces (results, headings, unit toggle)
+  context/            shared settings: imperial/metric units and the light/dark theme
+  hooks/              React hooks (saved bikes)
+  components/         shared UI pieces (results, headings, toggles, RPM gauge, compare card)
   pages/              one page per tool, plus the styleguide
   theme/              design tokens (every style value), antd theme config, app styles
   test/               test setup and shared test helpers

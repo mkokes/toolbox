@@ -30,12 +30,13 @@ Before you finish, run `npm test`, `npm run build`, `npm run lint` and `npm run 
 - **Colocate tests:** `foo.ts` → `foo.test.ts` in the same folder. Vitest picks up `src/**/*.test.{ts,tsx}`. Import `describe`/`it`/`expect`/`vi` from `vitest` explicitly; globals are off.
 - **Logic tests** (`src/lib`, `src/data`) are plain unit tests. `gearing.test.ts` and `mix.test.ts` compare against copies of the **legacy formulas** across a sweep of inputs. If you change the math on purpose, update those expectations deliberately. Don't loosen them to make a refactor pass.
 - **`options.test.ts` checks that every preset's defaults exist in its dropdowns,** so a new `engines.json` record with an out-of-range default fails here.
-- **Page tests** mount the real routes with `renderRoute(path)` from `src/test/render.tsx` (theme + `UnitsProvider` + memory router). It returns `{ user, router }`.
+- **Page tests** mount the real routes with `renderRoute(path)` from `src/test/render.tsx` (`ThemeProvider` + `ThemedConfig` + `UnitsProvider` + memory router). It returns `{ user, router }`.
   - Find controls by their label: every `Form.Item` has `htmlFor` matching its control's `id`. Keep that pairing when you add fields.
   - Pick antd Select options with `choose(user, /label/, 'Option text')` from `src/test/antd.ts`.
-- **To start in metric,** set `localStorage.setItem('toolbox.units', 'metric')` before rendering. `setup.ts` clears storage and unmounts after each test.
+- **To start in a given state,** set it before rendering. Metric: `localStorage.setItem('toolbox.units', 'metric')`. Dark: `setSystemDark(true)` from `src/test/matchMedia.ts`, or `localStorage.setItem('toolbox.theme', 'dark')`. Saved bikes: write a JSON array to `toolbox.bikes`. Gearing state: pass the query string to `renderRoute('/gearing?make=…&view=results')`.
+- `setup.ts` unmounts, clears localStorage, resets the matchMedia stub and removes `data-theme` after each test.
 - **antd-in-jsdom quirks** (already handled; don't remove these):
-  - `setup.ts` stubs `matchMedia` and strips the pseudo-element argument from `getComputedStyle`.
+  - `setup.ts` installs the `matchMedia` stub and strips the pseudo-element argument from `getComputedStyle`.
   - `renderRoute` disables user-event's pointer-events check, because dropdowns animate.
   - antd keeps closed dropdowns in the DOM, so assert on what the field shows (selected title or placeholder), not on whether an option exists.
   - The Slider reads the legacy `keyCode`. Drive it with `fireEvent.keyDown(slider, { key: 'ArrowRight', keyCode: 39, which: 39 })`, not `user.keyboard`.
@@ -131,3 +132,4 @@ src/
 
 - Branch off `master`, and land changes through a pull request. A push or merge to `master` deploys via `.github/workflows/deploy.yml`.
 - Add a line under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) for user-visible changes ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format). Don't create tags or bump versions unless asked.
+- **Releases** use semver, with the version in `package.json` (`npm version <x.y.z> --no-git-tag-version` updates the lockfile too). Move the `Unreleased` entries under `## [x.y.z] - YYYY-MM-DD`, update the comparison links at the bottom of the changelog, merge to `master`, then tag that merge commit `vX.Y.Z` (annotated) and publish a GitHub Release from the changelog section.
