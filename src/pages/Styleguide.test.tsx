@@ -1,5 +1,6 @@
 import { screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { contrast } from '../lib/contrast'
 import { renderRoute } from '../test/render'
 import { brand, palettes } from '../theme/tokens'
 
@@ -21,7 +22,8 @@ describe('Styleguide', () => {
     renderRoute('/styleguide')
     await screen.findByRole('heading', { name: 'Styleguide' })
     // The dark-mode heading red was 2.61:1 in v2.0.0; it's now lightened to pass for large text.
-    expect(within(screen.getByTestId('palette-dark')).getByText('3.68:1')).toBeInTheDocument()
+    const headingRatio = contrast(brand.dark.colorHeading, palettes.dark.colorBgLayout as string).toFixed(2)
+    expect(within(screen.getByTestId('palette-dark')).getByText(`${headingRatio}:1`)).toBeInTheDocument()
     for (const mode of ['dark', 'light']) {
       const panel = screen.getByTestId(`palette-${mode}`)
       expect(panel.querySelectorAll('.ant-tag-error')).toHaveLength(0)

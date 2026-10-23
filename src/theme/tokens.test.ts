@@ -21,6 +21,21 @@ describe.each(['dark', 'light'] as const)('%s palette', (mode) => {
     expect(contrast(brand[mode].colorHeading, bg)).toBeGreaterThanOrEqual(AA_LARGE_TEXT)
   })
 
+  it('has readable muted text on the page and on tiles', () => {
+    const muted = p.colorTextSecondary as string
+    expect(contrast(muted, bg)).toBeGreaterThanOrEqual(AA_TEXT)
+    expect(contrast(muted, p.colorBgContainer as string)).toBeGreaterThanOrEqual(AA_TEXT)
+  })
+
+  it('has the accent green readable on tiles', () => {
+    expect(contrast(brand[mode].colorAccent, p.colorBgContainer as string)).toBeGreaterThanOrEqual(AA_TEXT)
+  })
+
+  it('keeps the gauge needle readable against the page', () => {
+    expect(contrast(brand[mode].needle, bg)).toBeGreaterThanOrEqual(AA_LARGE_TEXT)
+    expect(brand[mode].gaugeTrack).not.toBe(bg)
+  })
+
   it('has readable white text on primary buttons', () => {
     expect(contrast(WHITE, p.colorPrimary as string)).toBeGreaterThanOrEqual(AA_TEXT)
   })

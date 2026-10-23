@@ -13,6 +13,7 @@ const red = '#CE1446'
 const redLight = '#EA3D6C' // the brand red lightened to stay readable on the dark background
 const charcoal = '#2B2A27'
 const offWhite = '#F7F6F2'
+const nearBlack = '#151513' // the dark "tuner" page background
 
 /** Tokens shared by both modes: type, shape, spacing and motion. */
 export const baseToken: Token = {
@@ -33,9 +34,13 @@ export const baseToken: Token = {
 /** Color tokens per mode. Contrast ratios are checked in tokens.test.ts. */
 export const palettes: Record<ThemeMode, Token> = {
   dark: {
-    colorBgBase: charcoal,
-    colorBgLayout: charcoal,
+    colorBgBase: nearBlack,
+    colorBgLayout: nearBlack,
+    // Tiles (fields, stats, cards) sit one step above the page; the footer and popups one more.
+    colorBgContainer: '#22211E',
+    colorBgElevated: '#2A2926',
     colorTextBase: '#EBEBEB',
+    colorTextSecondary: '#8D8B84',
     colorPrimary: red,
     colorLink: green,
     colorLinkHover: green,
@@ -45,7 +50,9 @@ export const palettes: Record<ThemeMode, Token> = {
     colorBgBase: '#FFFFFF',
     colorBgLayout: offWhite,
     colorBgContainer: '#FFFFFF',
+    colorBgElevated: '#FFFFFF',
     colorTextBase: charcoal,
+    colorTextSecondary: '#6B6961',
     colorPrimary: red,
     colorLink: greenDark,
     colorLinkHover: greenDark,
@@ -64,6 +71,10 @@ export interface BrandToken {
    * headers and more.
    */
   colorHeading: string
+  /** The dim ring behind the gauge's progress arc */
+  gaugeTrack: string
+  /** The gauge needle and hub */
+  needle: string
   /** The pill-button fill from the original bourbon `button(pill, $red)` mixin */
   buttonGradient: {
     start: string
@@ -99,8 +110,8 @@ const sharedBrand = {
 }
 
 export const brand: Record<ThemeMode, BrandToken> = {
-  dark: { ...sharedBrand, colorAccent: green, colorHeading: redLight },
-  light: { ...sharedBrand, colorAccent: greenDark, colorHeading: red },
+  dark: { ...sharedBrand, colorAccent: green, colorHeading: redLight, gaugeTrack: '#2C2B28', needle: '#EBEBEB' },
+  light: { ...sharedBrand, colorAccent: greenDark, colorHeading: red, gaugeTrack: '#E4E2DA', needle: charcoal },
 }
 
 /** What each color is for, shown on the styleguide. */
