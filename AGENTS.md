@@ -4,7 +4,7 @@ Context for AI coding agents working in this repo. The human-facing overview, sc
 
 ## What this is
 
-Moped Toolbox is a static single-page app with two calculators: moped gearing (engine RPM ↔ road speed) and two-stroke gas/oil mixing. Both support imperial or metric units. There is no backend. It is deployed to GitHub Pages at https://mkokes.github.io/toolbox/.
+Moped Toolbox is a static single-page app with two calculators: moped gearing (engine RPM ↔ road speed) and two-stroke gas/oil mixing. Both support imperial or metric units. There is no backend. It is deployed to GitHub Pages at https://toolbox.martysgarage.info/ (the old https://mkokes.github.io/toolbox/ redirects there).
 
 Stack: React 18, TypeScript 5.6, Vite 6, Ant Design 5 (CSS-in-JS theme), React Router 6. Tests: Vitest 5 + React Testing Library + jsdom. Node `^22.22.2 || ^24.15.0 || >=26` (`.nvmrc` pins 26).
 
@@ -114,7 +114,7 @@ src/
 - **Every `default*` value in a record must exist in the matching option list** in `lib/options.ts`, or the select shows a raw number.
 - **Vespa is special-cased** by manufacturer name in `sprocketOptions`, which returns pulleys in mm instead of sprocket teeth.
 - **Routing must stay hash-based** (`createHashRouter`). GitHub Pages has no SPA fallback, so `BrowserRouter` deep links would 404.
-- **Base path:** `vite.config.ts` reads `BASE_PATH`, which the deploy workflow sets from `actions/configure-pages`. Reference static files in `public/` with relative paths (`./icon.svg`) or `import.meta.env.BASE_URL`, never with a leading `/`. The same applies to the manifest: `start_url`, `scope`, `id` and icon `src` stay relative, and `src/pwa.test.ts` enforces it.
+- **Base path:** `vite.config.ts` reads `BASE_PATH`, which the deploy workflow sets from `actions/configure-pages`. It is `/` on the custom domain and `/toolbox/` on the default project address, and it is baked in at build time, so re-run the deploy workflow after changing the Pages custom domain or the site renders blank. Reference static files in `public/` with relative paths (`./icon.svg`) or `import.meta.env.BASE_URL`, never with a leading `/`. The same applies to the manifest: `start_url`, `scope`, `id` and icon `src` stay relative, and `src/pwa.test.ts` enforces it.
 - **Line endings:** `.gitattributes` forces LF. Windows machines with `core.autocrlf=true` would otherwise check out CRLF and fail `format:check`.
 - **TypeScript lib is ES2023** (for `toSorted()`, which the `unicorn/no-array-sort` rule prefers). `tsconfig.node.json` sends its `tsc -b` output to `node_modules/.tmp` so no stray `vite.config.js` appears in the repo.
 - **React is pinned to 18.** antd 5 needs an extra compatibility patch to run on React 19, so don't bump React on its own.
