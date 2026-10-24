@@ -4,7 +4,7 @@ Pocket calculators for moped gearing and two-stroke fuel mixing, in imperial or 
 
 Pick your bike and gearing and see what engine RPM you'll be turning at a given speed. Or work out how much two-stroke oil to add to a tank of gas. It's built for vintage moped owners, works well on a phone, and runs entirely in the browser.
 
-**Live site:** https://mkokes.github.io/toolbox/ · **Styleguide:** https://mkokes.github.io/toolbox/#/styleguide
+**Live site:** https://toolbox.martysgarage.info/ · **Styleguide:** https://toolbox.martysgarage.info/#/styleguide
 
 ## Contents
 
@@ -134,7 +134,7 @@ Add a record to `src/data/engines.json`. Records with the same `manufacturer` an
 
 ## Styleguide
 
-The styleguide lives at **https://mkokes.github.io/toolbox/#/styleguide**, or `http://localhost:5173/#/styleguide` when running `npm run dev`. The app doesn't link to it, so use the URL. It previews the light and dark palettes side by side with contrast ratios, and shows the resolved type, spacing and radius tokens, all straight from `src/theme/tokens.ts`.
+The styleguide lives at **https://toolbox.martysgarage.info/#/styleguide**, or `http://localhost:5173/#/styleguide` when running `npm run dev`. The app doesn't link to it, so use the URL. It previews the light and dark palettes side by side with contrast ratios, and shows the resolved type, spacing and radius tokens, all straight from `src/theme/tokens.ts`.
 
 All styling is antd design tokens: colors, fonts, sizes, spacing and borders are defined once in `tokens.ts` and read by components through `theme.useToken()`. To change the look, edit the tokens, not individual components.
 
@@ -142,7 +142,8 @@ All styling is antd design tokens: colors, fonts, sizes, spacing and borders are
 
 `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `master`, and can also be run by hand from the Actions tab. In the repo's **Settings → Pages**, **Source** must be set to **GitHub Actions**.
 
-- The workflow passes the Pages base path to the build as `BASE_PATH`, so assets resolve under `/toolbox/`.
+- The site is served from the custom domain **toolbox.martysgarage.info** (Settings → Pages → Custom domain). DNS is a `CNAME` for `toolbox` pointing at `mkokes.github.io`; if the DNS provider is Cloudflare, set the record to **DNS only** (no proxy) so GitHub can verify the domain and issue the HTTPS certificate. The old `mkokes.github.io/toolbox` address redirects to it.
+- The workflow passes the Pages base path to the build as `BASE_PATH`: `/` on the custom domain, `/toolbox/` on the default project address. The build bakes it in, so **after changing the custom domain, run the workflow again** or the site will ask for its files at the old path and not render.
 - The app uses hash URLs (`/#/gearing`) because GitHub Pages has no single-page-app fallback.
 - **Offline caching:** the build generates a service worker that caches the whole app. After a deploy, the new version downloads in the background. An app left open checks for one every hour and when it returns to the foreground, and switches over (reloading) once the user has been idle for an hour. Otherwise it takes over the next time the app is closed and reopened. There's no prompt.
 
@@ -154,7 +155,7 @@ Open the site in a browser, then use **Install** (Chrome or Edge: the icon in th
 
 `public/icon.svg` is the logo: a gear with the Lobster "M", drawn as plain vector paths so it renders without the font installed. `npm run icons` uses `pwa-assets.config.ts` to generate the favicon, the 64/192/512px PWA icons, a maskable icon and the Apple touch icon from it. `public/favicon.svg` is a simplified version (no tachometer, bigger M) so the tab icon stays readable at 16px; `pwa-assets.favicon.config.ts` builds `favicon.ico` from it. Commit the regenerated files.
 
-To try a production build under the same sub-path locally:
+To try a production build under the default project sub-path locally:
 
 ```sh
 BASE_PATH=/toolbox npm run build
