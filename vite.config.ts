@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { manifest } from './src/pwa'
 
-// GitHub Pages serves project sites from a sub-path (https://<user>.github.io/<repo>/).
+// GitHub Pages serves project sites from a sub-path (https://<user>.github.io/<repo>/), or from the root on a custom domain.
 // The deploy workflow sets BASE_PATH from actions/configure-pages; local dev stays at '/'.
 const basePath = process.env.BASE_PATH
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The site now lives at https://toolbox.martysgarage.info/. The old github.io address redirects there. Anyone who installed the app from the old address should reinstall it from the new one.
 - New app-like look. A near-black "tuner" theme with the RPM gauge as the star: a big dial that fills in green up to the needle, a large speed readout, and rounded tiles for speed and gear ratio. The light theme keeps the same layout on a warm off-white. The Light · Auto · Dark switch stays, now a small pill beside the title.
 - Selects and number fields are rounded tiles with small uppercase labels, the steps are slim progress bars, the speed slider is thicker with a larger handle, and the home cards are bigger tiles.
 - The styleguide shows the new palette (tile, raised and muted colors, gauge colors) and the new components.
