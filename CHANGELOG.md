@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- GPL-3.0-or-later license (`LICENSE`).
+
 ### Changed
 
 - The site now lives at https://toolbox.martysgarage.info/. The old github.io address redirects there. Anyone who installed the app from the old address should reinstall it from the new one.
