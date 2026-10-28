@@ -2,6 +2,7 @@
   "name": "moped-toolbox",
   "version": "2.1.0",
   "private": true,
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "vite",

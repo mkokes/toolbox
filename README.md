@@ -170,3 +170,9 @@ npx vite preview --base /toolbox/
 4. Open a pull request against `master`. Merging deploys the site.
 
 Record notable changes under `Unreleased` in [CHANGELOG.md](CHANGELOG.md). Guidance for AI coding agents is in [AGENTS.md](AGENTS.md).
+
+## License
+
+Copyright (C) 2018-2026 Marty Kokes
+
+Licensed under the GNU General Public License v3.0 or later. See [LICENSE](LICENSE).
