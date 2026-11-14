@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A soft fade and down arrow appears above the footer while there's more page to scroll, and goes away at the bottom.
 - An app left open now checks for a new version every hour and when you come back to it. A new version is applied (with a reload) only after an hour of no activity, or the next time the app is reopened, so it never reloads while you're using it.
 - New logo: a chunkier gear with a green ring and a tachometer, so it reads as a moped tool rather than a generic settings icon. Favicon, home-screen and app icons are regenerated to match, with a simplified favicon (no needle, bigger M) so the tab icon stays readable.
+- Upgraded React Router from 6 to 7 to pick up security fixes (GHSA-wrjc-x8rr-h8h6, GHSA-337j-9hxr-rhxg). URLs and behavior are unchanged.
 
 ## [2.1.0] - 2026-10-23
 

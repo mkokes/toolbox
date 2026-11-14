@@ -20,7 +20,7 @@ import {
   message,
   theme,
 } from 'antd'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router'
 import ActionBar from '../components/ActionBar'
 import PageHeader from '../components/PageHeader'
 import BackButton from '../components/BackButton'

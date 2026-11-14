@@ -40,7 +40,7 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
 
 |               |                                                       |
 | ------------- | ----------------------------------------------------- |
-| UI            | React 18, Ant Design 5, React Router 6 (hash routing) |
+| UI            | React 18, Ant Design 5, React Router 7 (hash routing) |
 | Language      | TypeScript 5.6                                        |
 | Build         | Vite 6                                                |
 | Styling       | antd design tokens + antd CSS-in-JS (no CSS files)    |

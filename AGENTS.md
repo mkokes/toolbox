@@ -6,7 +6,7 @@ Context for AI coding agents working in this repo. The human-facing overview, sc
 
 Moped Toolbox is a static single-page app with two calculators: moped gearing (engine RPM ↔ road speed) and two-stroke gas/oil mixing. Both support imperial or metric units. There is no backend. It is deployed to GitHub Pages at https://toolbox.martysgarage.info/ (the old https://mkokes.github.io/toolbox/ redirects there).
 
-Stack: React 18, TypeScript 5.6, Vite 6, Ant Design 5 (CSS-in-JS theme), React Router 6. Tests: Vitest 5 + React Testing Library + jsdom. Node `^22.22.2 || ^24.15.0 || >=26` (`.nvmrc` pins 26).
+Stack: React 18, TypeScript 5.6, Vite 6, Ant Design 5 (CSS-in-JS theme), React Router 7 (imported from `react-router`; `RouterProvider` from `react-router/dom`). Tests: Vitest 5 + React Testing Library + jsdom. Node `^22.22.2 || ^24.15.0 || >=26` (`.nvmrc` pins 26).
 
 ## Commands
 
