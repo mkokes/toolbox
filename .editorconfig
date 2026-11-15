@@ -1,0 +1,8 @@
+# Editor defaults shared across machines (Windows and macOS). Line endings are also
+# enforced by .gitattributes; formatting itself is left to the repo's formatter.
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
