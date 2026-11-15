@@ -1,7 +1,7 @@
 import { DashboardOutlined, ExperimentOutlined, RightOutlined } from '@ant-design/icons'
 import { Card, Flex, Typography, theme } from 'antd'
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import PageHeader from '../components/PageHeader'
 
 const tools: { title: string; description: string; to: string; icon: ReactNode }[] = [

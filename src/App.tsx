@@ -1,5 +1,5 @@
 import { Flex, theme } from 'antd'
-import { Link, Outlet, createHashRouter, type RouteObject } from 'react-router-dom'
+import { Link, Outlet, createHashRouter, type RouteObject } from 'react-router'
 import ScrollHint from './components/ScrollHint'
 import ThemeToggle from './components/ThemeToggle'
 import { useAppStyles } from './theme/useAppStyles'
