@@ -38,16 +38,16 @@ Pick your bike and gearing and see what engine RPM you'll be turning at a given 
 
 ## Tech stack
 
-|               |                                                       |
-| ------------- | ----------------------------------------------------- |
-| UI            | React 18, Ant Design 5, React Router 7 (hash routing) |
-| Language      | TypeScript 5.6                                        |
-| Build         | Vite 6                                                |
-| Styling       | antd design tokens + antd CSS-in-JS (no CSS files)    |
-| Tests         | Vitest, React Testing Library, jsdom                  |
-| Lint / format | oxlint, oxfmt, husky (pre-push hook)                  |
-| PWA           | vite-plugin-pwa (Workbox service worker)              |
-| Hosting       | GitHub Pages via GitHub Actions                       |
+|               |                                                     |
+| ------------- | --------------------------------------------------- |
+| UI            | React, Ant Design 6, React Router (hash routing)    |
+| Language      | TypeScript 7.0                                      |
+| Build         | Vite 8                                              |
+| Styling       | antd design tokens + `@ant-design/cssinjs` (no CSS) |
+| Tests         | Vitest 5, React Testing Library, jsdom              |
+| Lint / format | oxlint, oxfmt, husky (pre-push hook)                |
+| PWA           | vite-plugin-pwa 2 (Workbox service worker)          |
+| Hosting       | GitHub Pages via GitHub Actions                     |
 
 **Prerequisites:** Node.js 22.22, 24.15 or 26 and up (required by jsdom, which the tests use), and npm. The repo's `.nvmrc` pins Node 26.
 
@@ -102,7 +102,7 @@ The pre-push hook and the deploy workflow both run the suite, so a failing test 
 src/
   data/engines.json   engine presets (ratios, default sprockets, wheel and tire)
   data/engines.ts     typed lookups over the presets
-  lib/                pure calculator functions, unit conversions and select options
+  lib/                pure calculator functions, unit conversions, update scheduler and select options
   context/            shared settings: imperial/metric units and the light/dark theme
   hooks/              React hooks (saved bikes)
   components/         shared UI pieces (results, headings, toggles, RPM gauge, compare card)
@@ -110,6 +110,7 @@ src/
   theme/              design tokens (every style value), antd theme config, app styles
   test/               test setup and shared test helpers
 src/pwa.ts            web app manifest (name, colors, icons)
+src/pwaUpdates.ts     service worker registration and idle update scheduler wiring
 public/               icon.svg (logo source), favicon.svg (simplified for tiny sizes) and the icons generated from it, copied as-is into the build
 ```
 
