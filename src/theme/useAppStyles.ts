@@ -198,12 +198,12 @@ export function useAppStyles() {
       textAlign: 'center',
       '.tb-gauge-value': {
         color: brand.colorAccent,
-        fontSize: token.fontSizeHeading1 * 1.15,
+        fontSize: Number(token.fontSizeHeading1) * 1.15,
         fontWeight: 700,
         lineHeight: 1.1,
         fontVariantNumeric: 'tabular-nums',
         // Five digits would run into the dial's 0 and 12 labels, so they are set smaller.
-        '&.tb-gauge-value--long': { fontSize: token.fontSizeHeading1 * 0.85 },
+        '&.tb-gauge-value--long': { fontSize: Number(token.fontSizeHeading1) * 0.85 },
       },
       '.tb-gauge-caption': {
         color: token.colorTextSecondary,

@@ -44,9 +44,18 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router'],
-          antd: ['antd'],
+        manualChunks(id) {
+          const normalized = id.replaceAll('\\', '/')
+          if (
+            normalized.includes('/node_modules/react/') ||
+            normalized.includes('/node_modules/react-dom/') ||
+            normalized.includes('/node_modules/react-router/')
+          ) {
+            return 'react'
+          }
+          if (normalized.includes('/node_modules/antd/')) {
+            return 'antd'
+          }
         },
       },
     },
